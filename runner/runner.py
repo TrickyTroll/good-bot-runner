@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+"""``good-bot-runner``'s main module.
+
+This module contains the code for the program's command
+line interface. ``runner`` uses the
+`click <https://click.palletsprojects.com/en/7.x/>`
+library for its /CLI/.
+
+See click's
+`documentation <https://click.palletsprojects.com/en/7.x/#documentation>`
+for more information on how decorators affect the ``gb_run()`` function.
+"""
+
 import sys
 import click
 from runner import classmodule
@@ -29,5 +42,4 @@ def gb_run(input: click.File) -> None:
 
 
 def main():
-    # if __name__ == "__main__":
     gb_run()
