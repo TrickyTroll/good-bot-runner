@@ -1,3 +1,21 @@
+# -*- coding: utf-8 -*-
+"""Classes used by the ``runner`` program.
+
+This module contains the class used by ``runner`` create ``Commands``
+objects.
+
+Example:
+    To create a ``Commands object``::
+
+        import classmodule
+        todo = Commands(self, ["echo 'Hello, World!'"], ["prompt"])
+    
+    ``todo`` will be an object of type ``Commands``. The ``run()``
+    method should be used to spawn a new shell process and start
+    /typing/ the commands.::
+
+        todo.run()
+"""
 import pexpect
 import sys
 import time
