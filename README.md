@@ -55,7 +55,7 @@ from a terminal at the root of the folder you just downloaded. This will install
 
 ### Installing on Windows
 
-This project is not tested regularly on Windows. For a smoother experience, I recommend using this app in a containerized Linux environment. ~~~~
+This project is not tested regularly on Windows. For a smoother experience, I recommend using this app in a containerized Linux environment.
 
 ## How it works
 After it is done parsing the configuration,  `runner` spawns a shell process and sends the first command. That is, the first element in the list associated with the key `commands`. It then waits until the shell responds to something that matches the first element in the list associated to the `expect` key.
