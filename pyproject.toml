@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "runner"
-version = "0.1.0"
+version = "1.0.0"
 description = "Good-Bot's command runner."
 authors = ["TrickyTroll <tricky@beon.ca>"]
 license = "MIT"
