@@ -2,7 +2,7 @@
 
 ## Usage
 
-This program will be installed as an executable called `runner` by default. `runner` takes a `.yaml` file as an input and runs commands according to the instructions in the YAML file. For more information on how to write config files, see [Writing a configuration file](## Writing a configuration file) or an [example](https://github.com/TrickyTroll/good-bot-runner/blob/main/tests/examples/test_conf.yaml).
+This program will be installed as an executable called `runner` by default. `runner` takes a `.yaml` file as an input and runs commands according to the instructions in the YAML file. For more information on how to write config files, see [Writing a configuration file](#writing-a-configuration-file) or an [example](https://github.com/TrickyTroll/good-bot-runner/blob/main/tests/examples/test_conf.yaml).
 
 ```shell
 runner [PATH/TO/CONFIG]
