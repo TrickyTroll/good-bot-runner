@@ -1,7 +1,4 @@
-# Docs
-#work/good-bot/runner/docs #documentation
-
-> Documentation on Good-Bot's runner program.  
+# README
 
 ## Usage
 
