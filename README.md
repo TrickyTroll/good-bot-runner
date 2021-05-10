@@ -2,7 +2,7 @@
 
 ## Usage
 
-This program will be installed as an executable called `runner` by default. `runner` takes a `.yaml` file as an input and runs commands according to the instructions in the YAML file. For more information on how to write config files, see [Writing a configuration file](## Writing a configuration file) or an [example](https://github.com/TrickyTroll/good-bot-runner/blob/main/tests/examples/test_conf.yaml).
+This program will be installed as an executable called `runner` by default. `runner` takes a `.yaml` file as an input and runs commands according to the instructions in the YAML file. For more information on how to write config files, see [Writing a configuration file](#writing-a-configuration-file) or an [example](https://github.com/TrickyTroll/good-bot-runner/blob/main/tests/examples/test_conf.yaml).
 
 ```shell
 runner [PATH/TO/CONFIG]
@@ -52,6 +52,10 @@ pip install -U .
 ```
 
 from a terminal at the root of the folder you just downloaded. This will install a program called `runner` for you (the user running the command).
+
+### Installing on Windows
+
+This project is not tested regularly on Windows. For a smoother experience, I recommend using this app in a containerized Linux environment. ~~~~
 
 ## How it works
 After it is done parsing the configuration,  `runner` spawns a shell process and sends the first command. That is, the first element in the list associated with the key `commands`. It then waits until the shell responds to something that matches the first element in the list associated to the `expect` key.
