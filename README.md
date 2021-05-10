@@ -4,7 +4,7 @@
 
 This program allows you to send commands to a shell process as if they were typed by a human. `runner` takes simple configuration files as an input and uses [Pexpect](https://pexpect.readthedocs.io/en/stable/) to allow for interaction with pretty much every tool that has a command-line interface.
 
-[![asciicast](https://asciinema.org/a/Ode6853fZxYgoGuAkb3IpNxHc.svg)](https://asciinema.org/a/Ode6853fZxYgoGuAkb3IpNxHc)
+![demo](./img/demo.gif)
 
 ## Usage
 
