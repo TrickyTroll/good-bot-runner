@@ -59,7 +59,7 @@ def is_typo() -> bool:
     return random.randint(0, 100) < error_percent
 
 def pick_typo(next_letter: str) -> Union[str, None]:
-    """Picks a typoi according to the next letter to type.
+    """Picks a typo according to the next letter to type.
 
     This function uses `is_typo()` to determine wether or
     not there will be a typo.
