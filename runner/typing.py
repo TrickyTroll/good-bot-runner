@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """Functions to help with fake typing on the command line."""
 import pexpect
+import time
 import random
+from types import List
 
 LEFT_HAND = ["as", "sa", "er", "re", "sd", "ds", "ec", "ce", "ew", "we", "wa", "aw", "cr", "sc", "cs"]
 RIGHT_HAND = ["lk", "lo", "ol", "op", "po", "io", "oi", "no", "on", "in", "ni"]
@@ -114,5 +116,19 @@ def get_delay(previous_letter: str, next_letter: str) -> float:
         avg_delay -= faster_by
     return avg_delay
 
-def type_sentence():
+def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> None:
+    delay: float = get_delay(previous, next)
+    time
     pass
+
+def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
+
+    letters: List[str] = list(sentence)
+
+    if not letters[-1] == "\n":
+        letters.append("\n")
+
+    for letter in letters:
+        type_letters(child, previous, next))
+    
+    return None
