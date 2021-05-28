@@ -3,7 +3,7 @@
 import pexpect
 import time
 import random
-from types import List, Dict, Union
+from typing import List, Dict, Union
 
 LEFT_HAND: List[str] = ["as", "sa", "er", "re", "sd", "ds", "ec", "ce", "ew", "we", "wa", "aw", "cr", "sc", "cs"]
 RIGHT_HAND: List[str] = ["lk", "lo", "ol", "op", "po", "io", "oi", "no", "on", "in", "ni"]
@@ -171,7 +171,10 @@ def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
     if not letters[-1] == "\n":
         letters.append("\n")
 
-    for letter in letters:
-        type_letters(child, previous, next))
-    
-    return None
+    for index , letter in enumerate(letters):
+        if index > 0:
+            type_letters(child, letters[index-1], letter)
+        else:
+            # Setting `letter` as previous letter when there
+            # is none.
+            type_letters(child, letter, letter)
