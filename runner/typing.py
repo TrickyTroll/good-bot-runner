@@ -6,6 +6,35 @@ LEFT_HAND = ["as", "sa", "er", "re", "sd", "ds", "ec", "ce", "ew", "we", "wa", "
 RIGHT_HAND = ["lk", "lo", "ol", "op", "po", "io", "oi", "no", "on", "in", "ni"]
 HAND_ALTERNATION = ["al", "la", "ak", "ka", "am", "ma", "an", "na", "ai", "ia", "so", "os", "sp", "ps", "en", "ne", "em", "me", "el", "le", "ep", "pe"]
 
+PLAUSIBLE_TYPOS = { # In keyboard order.
+    "q": ["w", "a"],
+    "w": ["q", "e", "s"],
+    "e": ["w", "r", "d"],
+    "r": ["e", "t", "f"],
+    "t": ["r", "y", "g"],
+    "y": ["t", "u", "h"],
+    "u": ["y", "i", "j"],
+    "i": ["u", "o", "k"],
+    "o": ["i", "p", "l"],
+    "p": ["o", "[", ";"],
+    "a": ["s", "q"],
+    "s": ["a", "w", "d"],
+    "d": ["s", "f", "e"],
+    "f": ["d", "d", "r"],
+    "g": ["f", "h", "t"],
+    "h": ["g", "j", "y"],
+    "j": ["h", "k", "i"],
+    "k": ["j", "l", "o"],
+    "l": ["k", "o", "p", ";"],
+    "z": ["a", "x", "s"],
+    "x": ["z", "c", "s"],
+    "c": ["x", "v", "d"],
+    "v": ["c", "b", "f"],
+    "b": ["v", "n", "g"],
+    "n": ["b", "m", "h"],
+    "m": ["n", "j", "k", ","]
+}
+
 def is_typo() -> bool:
     """
     Determines wether or not a combination of key presses should 
@@ -25,6 +54,10 @@ def is_typo() -> bool:
     error_percent = random.randrange(1,4)/100 # Stop isn't included.
     # Randint includes the upper bound.
     return random.randint(0, 100) < error_percent
+
+def introduce_typo(previous_letter: str, next_letter: str) -> None:
+    if is_typo:
+
 
 def get_delay(previous_letter: str, next_letter: str) -> float:
     """Function to get the delay before the next letter is typed.
