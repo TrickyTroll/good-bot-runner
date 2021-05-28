@@ -75,7 +75,8 @@ class Commands:
 
         return None
 
-    def fake_typing_secret(self, secret: str, child: pexpect.pty_spawn.spawn) -> None:
+    def fake_typing_secret(self, secret: str,
+                           child: pexpect.pty_spawn.spawn) -> None:
         """To fake type a password or other secret. This ensures that the
         password won't be recorded.
 
