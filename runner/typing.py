@@ -142,12 +142,27 @@ def type_typo(child: pexpect.pty_spawn.spawn, next_letter: str, typo: str) -> No
     child.send(next_letter)
 
 def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> None:
+    """Sends the next letter to the process.
+
+    This function also calculates the delay using the previous letter 
+    and the chances of typing a typo.
+
+    If there is a typo, `type_typo()` is called and sends the wrong letter
+    to the process before correcting it.
+
+    Args:
+        child (pexpect.pty_spawn.spawn): The child process to which the next
+            letter will be sent.
+        previous (str): The last letter that has been sent to the process.
+        next (str): The next letter to send to the process.
+    """
     delay: float = get_delay(previous, next)
     typo: Union[str, None] = pick_typo(next)
-    if typo:
-        type_typo(next, typo)
     time.sleep(delay)
-    pass
+    if typo:
+        type_typo(child, next, typo)
+    else:
+        child.send(next)
 
 def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
 
