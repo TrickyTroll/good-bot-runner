@@ -165,6 +165,17 @@ def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> No
         child.send(next)
 
 def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
+    """Types a full sentence to the child program.
+
+    It uses delays and typos to make typing human like.
+
+    This function ends by sending a newline to the child process.
+
+    Args:
+        child (pexpect.pty_spawn.spawn): The child process to which
+            the sentence will be sent.
+        sentence (str): What will be typed and sent to the process.
+    """
 
     letters: List[str] = list(sentence)
 
