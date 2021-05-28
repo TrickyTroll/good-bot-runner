@@ -3,13 +3,13 @@
 import pexpect
 import time
 import random
-from types import List
+from types import List, Dict, Union
 
-LEFT_HAND = ["as", "sa", "er", "re", "sd", "ds", "ec", "ce", "ew", "we", "wa", "aw", "cr", "sc", "cs"]
-RIGHT_HAND = ["lk", "lo", "ol", "op", "po", "io", "oi", "no", "on", "in", "ni"]
-HAND_ALTERNATION = ["al", "la", "ak", "ka", "am", "ma", "an", "na", "ai", "ia", "so", "os", "sp", "ps", "en", "ne", "em", "me", "el", "le", "ep", "pe"]
+LEFT_HAND: List[str] = ["as", "sa", "er", "re", "sd", "ds", "ec", "ce", "ew", "we", "wa", "aw", "cr", "sc", "cs"]
+RIGHT_HAND: List[str] = ["lk", "lo", "ol", "op", "po", "io", "oi", "no", "on", "in", "ni"]
+HAND_ALTERNATION: List[str] = ["al", "la", "ak", "ka", "am", "ma", "an", "na", "ai", "ia", "so", "os", "sp", "ps", "en", "ne", "em", "me", "el", "le", "ep", "pe"]
 
-PLAUSIBLE_TYPOS = { # In keyboard order.
+PLAUSIBLE_TYPOS: Dict[str, str] = { # In keyboard order.
     "q": ["w", "a"],
     "w": ["q", "e", "s"],
     "e": ["w", "r", "d"],
@@ -58,7 +58,7 @@ def is_typo() -> bool:
     # Randint includes the upper bound.
     return random.randint(0, 100) < error_percent
 
-def pick_typo(next_letter: str) -> None:
+def pick_typo(next_letter: str) -> Union[str, None]:
     """Picks a typoi according to the next letter to type.
 
     This function uses `is_typo()` to determine wether or
@@ -72,9 +72,8 @@ def pick_typo(next_letter: str) -> None:
         next_letter (str): The next letter that should be typed.
 
     Returns:
-        str: The typo or an empty string if there is no typo.
+        str/None: The typo or `None` if there is no typo.
     """
-    typo = ""
 
     if is_typo:
 
@@ -85,7 +84,11 @@ def pick_typo(next_letter: str) -> None:
             typo = random.choice(plausible_for_letter)
 
         except KeyError: # No typo defined for `next_letter`
-            typo = ""
+            typo = None
+    
+    else:
+
+        typo = None
     
     return typo
 
