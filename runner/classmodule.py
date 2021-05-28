@@ -20,6 +20,8 @@ import pexpect
 import sys
 import time
 
+from runner import human_typing
+
 
 class Commands:
     def __init__(self, commands: list, expect: list):
@@ -67,13 +69,7 @@ class Commands:
         Returns:
             None: None
         """
-        letters = list(text)
-        letters.append("\n")
-        for letter in letters:
-            time.sleep(0.12)  # TODO: This should also be random.
-            child.send(letter)
-
-        return None
+        pass
 
     def fake_typing_secret(self, secret: str,
                            child: pexpect.pty_spawn.spawn) -> None:
