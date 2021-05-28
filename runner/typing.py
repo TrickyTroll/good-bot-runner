@@ -119,9 +119,15 @@ def get_delay(previous_letter: str, next_letter: str) -> float:
         avg_delay -= faster_by
     return avg_delay
 
+def type_typo():
+    pass
+
 def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> None:
     delay: float = get_delay(previous, next)
-    time
+    typo: Union[str, None] = pick_typo(next)
+    if typo:
+        type_typo(next, typo)
+    time.sleep(delay)
     pass
 
 def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
