@@ -21,4 +21,6 @@ def is_typo() -> bool:
     error_percent = random.randrange(1,4)/100 # Stop isn't included.
     # Randint includes the upper bound.
     return random.randint(0, 100) < error_percent
-    
+
+def get_delay(previous_letter: str, next_letter: str) -> float:
+    pass
