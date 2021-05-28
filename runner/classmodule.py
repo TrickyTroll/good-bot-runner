@@ -59,17 +59,21 @@ class Commands:
         """
         return self.dir_name
 
-    def fake_typing(self, text: str, child: pexpect.pty_spawn.spawn) -> None:
+    def fake_typing(self, child: pexpect.pty_spawn.spawn, text: str) -> None:
         """Fake typing of commands
+
+        This function uses the `type_sentence()` function from the
+        `human_typing` module.
+
+        This function adds typos and delays to make the typing as
+        human-like as possible.
 
         Args:
             text (str): The text to type
             child (pexpect.pty_spawn.spawn): The child process.
 
-        Returns:
-            None: None
         """
-        pass
+        human_typing.type_sentence(child, text)
 
     def fake_typing_secret(self, secret: str,
                            child: pexpect.pty_spawn.spawn) -> None:
