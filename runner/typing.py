@@ -55,8 +55,34 @@ def is_typo() -> bool:
     # Randint includes the upper bound.
     return random.randint(0, 100) < error_percent
 
-def introduce_typo(previous_letter: str, next_letter: str) -> None:
+def pick_typo(next_letter: str) -> None:
+    """Picks a typoi according to the next letter to type.
+
+    This function uses `is_typo()` to determine wether or
+    not there will be a typo.
+
+    Plausible typos are defined in the `PLAUSIBLE_TYPOS`
+    global variable. If `next_letter` is not a key in the
+    `PLAUSIBLE_TYPOS` dict, the typo is set to none.
+
+    Args:
+        next_letter (str): The next letter that should be typed.
+
+    Returns:
+        str: The typo or an empty string if there is no typo.
+    """
+    typo = ""
+
     if is_typo:
+
+        try:
+            plausible_for_letter = PLAUSIBLE_TYPOS[next_letter]
+            typo = random.choice(plausible_for_letter)
+
+        except KeyError: # No typo defined for `next_letter`
+            typo = ""
+    
+    return typo
 
 
 def get_delay(previous_letter: str, next_letter: str) -> float:
