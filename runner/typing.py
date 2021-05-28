@@ -5,11 +5,62 @@ import time
 import random
 from typing import List, Dict, Union
 
-LEFT_HAND: List[str] = ["as", "sa", "er", "re", "sd", "ds", "ec", "ce", "ew", "we", "wa", "aw", "cr", "sc", "cs"]
-RIGHT_HAND: List[str] = ["lk", "lo", "ol", "op", "po", "io", "oi", "no", "on", "in", "ni"]
-HAND_ALTERNATION: List[str] = ["al", "la", "ak", "ka", "am", "ma", "an", "na", "ai", "ia", "so", "os", "sp", "ps", "en", "ne", "em", "me", "el", "le", "ep", "pe"]
+LEFT_HAND: List[str] = [
+    "as",
+    "sa",
+    "er",
+    "re",
+    "sd",
+    "ds",
+    "ec",
+    "ce",
+    "ew",
+    "we",
+    "wa",
+    "aw",
+    "cr",
+    "sc",
+    "cs",
+]
+RIGHT_HAND: List[str] = [
+    "lk",
+    "lo",
+    "ol",
+    "op",
+    "po",
+    "io",
+    "oi",
+    "no",
+    "on",
+    "in",
+    "ni",
+]
+HAND_ALTERNATION: List[str] = [
+    "al",
+    "la",
+    "ak",
+    "ka",
+    "am",
+    "ma",
+    "an",
+    "na",
+    "ai",
+    "ia",
+    "so",
+    "os",
+    "sp",
+    "ps",
+    "en",
+    "ne",
+    "em",
+    "me",
+    "el",
+    "le",
+    "ep",
+    "pe",
+]
 
-PLAUSIBLE_TYPOS: Dict[str, str] = { # In keyboard order.
+PLAUSIBLE_TYPOS: Dict[str, str] = {  # In keyboard order.
     "q": ["w", "a"],
     "w": ["q", "e", "s"],
     "e": ["w", "r", "d"],
@@ -35,12 +86,13 @@ PLAUSIBLE_TYPOS: Dict[str, str] = { # In keyboard order.
     "v": ["c", "b", "f"],
     "b": ["v", "n", "g"],
     "n": ["b", "m", "h"],
-    "m": ["n", "j", "k", ","]
+    "m": ["n", "j", "k", ","],
 }
+
 
 def is_typo() -> bool:
     """
-    Determines wether or not a combination of key presses should 
+    Determines wether or not a combination of key presses should
     generate a typo. For now, we assume that every key press has
     an equal chance of being a typo.
 
@@ -54,9 +106,10 @@ def is_typo() -> bool:
         bool: Whether or not there will be a typo.
 
     """
-    error_percent = random.randrange(1,4)/100 # Stop isn't included.
+    error_percent = random.randrange(1, 4) / 100  # Stop isn't included.
     # Randint includes the upper bound.
     return random.randint(0, 100) < error_percent
+
 
 def pick_typo(next_letter: str) -> Union[str, None]:
     """Picks a typo according to the next letter to type.
@@ -83,13 +136,13 @@ def pick_typo(next_letter: str) -> Union[str, None]:
             # key.
             typo = random.choice(plausible_for_letter)
 
-        except KeyError: # No typo defined for `next_letter`
+        except KeyError:  # No typo defined for `next_letter`
             typo = None
-    
+
     else:
 
         typo = None
-    
+
     return typo
 
 
@@ -112,12 +165,13 @@ def get_delay(previous_letter: str, next_letter: str) -> float:
             This value is calculated using the previous and next
             letter.
     """
-    avg_delay = random.randint(120, 170)/1000 # in seconds
-    if previous_letter+next_letter in HAND_ALTERNATION:
+    avg_delay = random.randint(120, 170) / 1000  # in seconds
+    if previous_letter + next_letter in HAND_ALTERNATION:
         # Two letters typed by different hands are 30-60ms faster.
-        faster_by = random.randint(30, 60)/1000
+        faster_by = random.randint(30, 60) / 1000
         avg_delay -= faster_by
     return avg_delay
+
 
 def type_typo(child: pexpect.pty_spawn.spawn, next_letter: str, typo: str) -> None:
     """Sends a typo to the child process and corrects it afterwards.
@@ -141,10 +195,11 @@ def type_typo(child: pexpect.pty_spawn.spawn, next_letter: str, typo: str) -> No
     time.sleep(get_delay(typo, next_letter))
     child.send(next_letter)
 
+
 def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> None:
     """Sends the next letter to the process.
 
-    This function also calculates the delay using the previous letter 
+    This function also calculates the delay using the previous letter
     and the chances of typing a typo.
 
     If there is a typo, `type_typo()` is called and sends the wrong letter
@@ -164,6 +219,7 @@ def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> No
     else:
         child.send(next)
 
+
 def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
     """Types a full sentence to the child program.
 
@@ -182,9 +238,9 @@ def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
     if not letters[-1] == "\n":
         letters.append("\n")
 
-    for index , letter in enumerate(letters):
+    for index, letter in enumerate(letters):
         if index > 0:
-            type_letters(child, letters[index-1], letter)
+            type_letters(child, letters[index - 1], letter)
         else:
             # Setting `letter` as previous letter when there
             # is none.
