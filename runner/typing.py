@@ -77,6 +77,8 @@ def pick_typo(next_letter: str) -> None:
 
         try:
             plausible_for_letter = PLAUSIBLE_TYPOS[next_letter]
+            # Pick a random typo in the list associated with the
+            # key.
             typo = random.choice(plausible_for_letter)
 
         except KeyError: # No typo defined for `next_letter`
