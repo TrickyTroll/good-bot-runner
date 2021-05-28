@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Functions to help with fake typing on the command line."""
+import pexpect
 import random
 
 LEFT_HAND = ["as", "sa", "er", "re", "sd", "ds", "ec", "ce", "ew", "we", "wa", "aw", "cr", "sc", "cs"]
@@ -112,3 +113,6 @@ def get_delay(previous_letter: str, next_letter: str) -> float:
         faster_by = random.randint(30, 60)/1000
         avg_delay -= faster_by
     return avg_delay
+
+def type_sentence():
+    pass
