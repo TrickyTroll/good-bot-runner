@@ -119,8 +119,27 @@ def get_delay(previous_letter: str, next_letter: str) -> float:
         avg_delay -= faster_by
     return avg_delay
 
-def type_typo():
-    pass
+def type_typo(child: pexpect.pty_spawn.spawn, next_letter: str, typo: str) -> None:
+    """Sends a typo to the child process and corrects it afterwards.
+
+    Delays are computed between each keystroke, including when the computer
+    presses backspace. For now, only one typo can be introduced at a time.
+    More than one would be distracting for the user.
+
+    Args:
+        child (pexpect.pty_spawn.spawn): The child process where the typo
+            will be sent.
+        next_letter (str): The next letter that would be typed if there
+            was no typo. This is the letter that will be typed in the
+            end.
+        typo (str): The letter that will be typed instead of `next_letter`
+            the first time.
+    """
+    child.send(typo)
+    time.sleep(get_delay(typo, "backspace"))
+    child.send("\b")
+    time.sleep(get_delay(typo, next_letter))
+    child.send(next_letter)
 
 def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> None:
     delay: float = get_delay(previous, next)
