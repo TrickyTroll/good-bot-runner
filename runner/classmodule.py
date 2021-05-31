@@ -90,17 +90,16 @@ class Commands:
             secret (str): The secret that has to be typed
             child (pexpect.pty_spawn.spawn): The child process.
 
-        Returns:
-            None: None
         """
+        if not isinstance(secret, str):
+            raise TypeError(f"Secret must be of type string, not {type(secret)}.")
+
         child.logfile = None
         child.logfile_read = sys.stdout
         child.delaybeforesend = 1
         child.sendline(secret)
         child.logfile = sys.stdout
         child.logfile_read = None
-
-        return None
 
     def is_password(self, command: Union[str, dict]) -> bool:
         """
@@ -158,7 +157,7 @@ class Commands:
         for i in range(len(self.commands)):
             if self.is_password(self.commands[i]):
                 password = self.get_secret(self.commands[i])
-                self.fake_typing_secret(child, password)
+                self.fake_typing(child, password)
             else:
                 if self.expect[i] == "prompt":
                     child.expect("[#$%]")
