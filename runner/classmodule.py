@@ -154,6 +154,7 @@ class Commands:
         self.fake_typing(child, self.initial)
         for i in range(len(self.commands)):
             if self.is_password(self.commands[i]):
+                child.expect(self.expect[i])
                 password = self.get_secret(self.commands[i])
                 self.fake_typing(child, password)
             else:
