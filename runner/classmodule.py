@@ -23,7 +23,9 @@ todo.run()
 """
 import pexpect
 import sys
+import os
 import time
+from typing import Union, List, Dict
 
 from runner import human_typing
 
@@ -101,24 +103,28 @@ class Commands:
 
         return None
 
-    def is_password(self, returning: str) -> bool:
-        """Checks if the next thing to return is as password.
+    def is_password(self, command: Union[str, dict]) -> bool:
+        """
+        Checks if the next thing that will be sent to the child
+        process is a password.
 
         Args:
-            returning (str): The string that will be typed ot answer
-            the prompt.
+            command (Union[str, dict]): The next command to send
+                to the child process.
 
         Returns:
-            bool: Wether the answer will be a password or not.
+            bool: Whether or not `command` is a password.
         """
 
-        password_string = returning.split()
-
-        if password_string[0] == "Password":
+        if isinstance(command, dict) and "password" in dict.keys():
 
             return True
 
         return False
+    
+    def get_secret(self, command: Union[str, dict]) -> str:
+        env_key = command.values()[0]
+        
 
     def run(self) -> None:
         """Runs the command and anwsers all prompts for the sequence.
