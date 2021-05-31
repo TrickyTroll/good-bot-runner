@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+
+  app:
+    build: .
+    command: python3 /runner/cli.py
+    volumes:
+        - .:/project
+
+  runner: 
+    build: .
+    command: >
+        sh -c "pip install . &&
+               runner ./tests/examples/test_conf.yaml"
+    volumes:
+        - .:/app
