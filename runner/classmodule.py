@@ -78,13 +78,7 @@ class Commands:
             child (pexpect.pty_spawn.spawn): The child process.
 
         """
-        letters = list(text)
-        letters.append("\n")
-        for letter in letters:
-            time.sleep(0.12)  # TODO: This should also be random.
-            child.send(letter)
-
-        return None
+        human_typing.type_sentence(child, text)
 
     def fake_typing_secret(self, secret: str,
                            child: pexpect.pty_spawn.spawn) -> None:
