@@ -82,8 +82,7 @@ class Commands:
         """
         human_typing.type_sentence(child, text)
 
-    def fake_typing_secret(self, secret: str,
-                           child: pexpect.pty_spawn.spawn) -> None:
+    def fake_typing_secret(self, child: pexpect.pty_spawn.spawn, secret: str) -> None:
         """To fake type a password or other secret. This ensures that the
         password won't be recorded.
 
@@ -121,7 +120,7 @@ class Commands:
             return True
 
         return False
-    
+
     def get_secret(self, command: Union[str, dict]) -> str:
         """Gets a password value from an environment variable.
 
@@ -137,7 +136,7 @@ class Commands:
         """
         env_key = command.values()[0]
         password = os.getenv(env_key)
-        
+
         return password
 
     def run(self) -> None:
@@ -155,9 +154,8 @@ class Commands:
         self.fake_typing(child, self.initial)
         for i in range(len(self.commands)):
             if self.is_password(self.commands[i]):
-                # TODO: This is where the password getter shoud happen.
-                print("Passwords havent been implemented yet.")
-                sys.exit()
+                password = self.get_secret(self.commands[i])
+                self.fake_typing_secret(child, password)
             else:
                 if self.expect[i] == "prompt":
                     child.expect("[#$%]")
