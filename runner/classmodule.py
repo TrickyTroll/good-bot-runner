@@ -115,26 +115,29 @@ class Commands:
             bool: Whether or not `command` is a password.
         """
 
-        if isinstance(command, dict) and "password" in dict.keys():
-
-            return True
+        if isinstance(command, dict):
+            if "password" in command.keys():
+                return True
 
         return False
 
-    def get_secret(self, command: Union[str, dict]) -> str:
+    def get_secret(self, command: dict) -> str:
         """Gets a password value from an environment variable.
 
         The variable should be defined by the user in the project's
         configuration file.
 
         Args:
-            command (Union[str, dict]): A value in the configuration
-                file's `commands` field.
+            command (dict): A value in the configuration
+                file's `commands` field. This value can only
+                be of type `dict` since `get_secret()` should only
+                be called after checking that the `command` is a
+                password to send.
 
         Returns:
             str: A password to send to the child process.
         """
-        env_key = command.values()[0]
+        env_key = [item for item in command.values()][0]
         password = os.getenv(env_key)
 
         return password
