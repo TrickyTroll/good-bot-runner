@@ -128,7 +128,7 @@ def pick_typo(next_letter: str) -> Union[str, None]:
         str/None: The typo or `None` if there is no typo.
     """
 
-    if is_typo:
+    if is_typo():
 
         try:
             plausible_for_letter = PLAUSIBLE_TYPOS[next_letter]
