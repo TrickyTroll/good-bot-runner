@@ -1,24 +1,31 @@
 # -*- coding: utf-8 -*-
-"""Classes used by the ``runner`` program.
+"""Classes used by the `runner` program.
 
-This module contains the class used by ``runner`` create ``Commands``
+This module contains the class used by `runner` create `Commands`
 objects.
 
-Example:
-    To create a ``Commands object``::
+## Example:
 
-        import classmodule
-        todo = Commands(self, ["echo 'Hello, World!'"], ["prompt"])
+To create a `Commands object`:
+
+```python
+import classmodule
+todo = Commands(self, ["echo 'Hello, World!'"], ["prompt"])
+```
     
-    ``todo`` will be an object of type ``Commands``. The ``run()``
-    method should be used to spawn a new shell process and start
-    /typing/ the commands.::
+`todo` will be an object of type `Commands`. The `run()`
+method should be used to spawn a new shell process and start
+*typing* the commands.:
 
-        todo.run()
+```python
+todo.run()
+```
 """
 import pexpect
 import sys
 import time
+
+from runner import human_typing
 
 
 class Commands:
@@ -57,23 +64,21 @@ class Commands:
         """
         return self.dir_name
 
-    def fake_typing(self, text: str, child: pexpect.pty_spawn.spawn) -> None:
+    def fake_typing(self, child: pexpect.pty_spawn.spawn, text: str) -> None:
         """Fake typing of commands
+
+        This function uses the `type_sentence()` function from the
+        `human_typing` module.
+
+        This function adds typos and delays to make the typing as
+        human-like as possible.
 
         Args:
             text (str): The text to type
             child (pexpect.pty_spawn.spawn): The child process.
 
-        Returns:
-            None: None
         """
-        letters = list(text)
-        letters.append("\n")
-        for letter in letters:
-            time.sleep(0.12)  # TODO: This should also be random.
-            child.send(letter)
-
-        return None
+        human_typing.type_sentence(child, text)
 
     def fake_typing_secret(self, secret: str,
                            child: pexpect.pty_spawn.spawn) -> None:
@@ -87,7 +92,6 @@ class Commands:
         Returns:
             None: None
         """
-
         child.logfile = None
         child.logfile_read = sys.stdout
         child.delaybeforesend = 1
@@ -126,9 +130,9 @@ class Commands:
         child.logfile = sys.stdout.buffer
         # TODO: This should be changed for a better regex
         # (check for the EOL).
-        child.expect("#")
+        child.expect("[#$%]")
 
-        self.fake_typing(self.initial, child)
+        self.fake_typing(child, self.initial)
         for i in range(len(self.commands)):
             if self.is_password(self.commands[i]):
                 # TODO: This is where the password getter shoud happen.
@@ -136,13 +140,13 @@ class Commands:
                 sys.exit()
             else:
                 if self.expect[i] == "prompt":
-                    child.expect("#")
+                    child.expect("[#$%]")
                 else:
                     child.expect(self.expect[i])
 
-                self.fake_typing(self.commands[i], child)
+                self.fake_typing(child, self.commands[i])
 
-        child.expect("#")
+        child.expect("[#$%]")
         child.close()
 
         return None

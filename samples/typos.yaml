@@ -1,0 +1,4 @@
+commands:
+  - echo 'This is a very very very long string of text where there is a pretty high chance of making a typo.'
+expect:
+  - prompt
