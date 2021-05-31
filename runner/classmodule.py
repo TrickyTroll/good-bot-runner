@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
-"""Classes used by the ``runner`` program.
+"""Classes used by the `runner` program.
 
-This module contains the class used by ``runner`` create ``Commands``
+This module contains the class used by `runner` create `Commands`
 objects.
 
-Example:
-    To create a ``Commands object``::
+## Example:
 
-        import classmodule
-        todo = Commands(self, ["echo 'Hello, World!'"], ["prompt"])
+To create a `Commands object`:
+
+```python
+import classmodule
+todo = Commands(self, ["echo 'Hello, World!'"], ["prompt"])
+```
     
-    ``todo`` will be an object of type ``Commands``. The ``run()``
-    method should be used to spawn a new shell process and start
-    /typing/ the commands.::
+`todo` will be an object of type `Commands`. The `run()`
+method should be used to spawn a new shell process and start
+*typing* the commands.:
 
-        todo.run()
+```python
+todo.run()
+```
 """
 import pexpect
 import sys
