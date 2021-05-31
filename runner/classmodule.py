@@ -123,8 +123,22 @@ class Commands:
         return False
     
     def get_secret(self, command: Union[str, dict]) -> str:
+        """Gets a password value from an environment variable.
+
+        The variable should be defined by the user in the project's
+        configuration file.
+
+        Args:
+            command (Union[str, dict]): A value in the configuration
+                file's `commands` field.
+
+        Returns:
+            str: A password to send to the child process.
+        """
         env_key = command.values()[0]
+        password = os.getenv(env_key)
         
+        return password
 
     def run(self) -> None:
         """Runs the command and anwsers all prompts for the sequence.
