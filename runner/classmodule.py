@@ -149,8 +149,6 @@ class Commands:
         """
         child = pexpect.spawn("bash", echo=False)
         child.logfile = sys.stdout.buffer
-        # TODO: This should be changed for a better regex
-        # (check for the EOL).
         child.expect("[#$%]")
 
         self.fake_typing(child, self.initial)
