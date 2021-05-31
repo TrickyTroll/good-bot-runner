@@ -78,7 +78,13 @@ class Commands:
             child (pexpect.pty_spawn.spawn): The child process.
 
         """
-        human_typing.type_sentence(child, text)
+        letters = list(text)
+        letters.append("\n")
+        for letter in letters:
+            time.sleep(0.12)  # TODO: This should also be random.
+            child.send(letter)
+
+        return None
 
     def fake_typing_secret(self, secret: str,
                            child: pexpect.pty_spawn.spawn) -> None:
@@ -92,7 +98,6 @@ class Commands:
         Returns:
             None: None
         """
-
         child.logfile = None
         child.logfile_read = sys.stdout
         child.delaybeforesend = 1
@@ -131,9 +136,9 @@ class Commands:
         child.logfile = sys.stdout.buffer
         # TODO: This should be changed for a better regex
         # (check for the EOL).
-        child.expect("#")
+        child.expect("[#$%]")
 
-        self.fake_typing(self.initial, child)
+        self.fake_typing(child, self.initial)
         for i in range(len(self.commands)):
             if self.is_password(self.commands[i]):
                 # TODO: This is where the password getter shoud happen.
@@ -141,13 +146,13 @@ class Commands:
                 sys.exit()
             else:
                 if self.expect[i] == "prompt":
-                    child.expect("#")
+                    child.expect("[#$%]")
                 else:
                     child.expect(self.expect[i])
 
-                self.fake_typing(self.commands[i], child)
+                self.fake_typing(child, self.commands[i])
 
-        child.expect("#")
+        child.expect("[#$%]")
         child.close()
 
         return None
