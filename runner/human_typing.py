@@ -131,7 +131,7 @@ def pick_typo(next_letter: str) -> Union[str, None]:
     if is_typo():
 
         try:
-            plausible_for_letter = PLAUSIBLE_TYPOS[next_letter]
+            plausible_for_letter = PLAUSIBLE_TYPOS[next_letter.lower()]
             # Pick a random typo in the list associated with the
             # key.
             typo = random.choice(plausible_for_letter)
@@ -166,7 +166,7 @@ def get_delay(previous_letter: str, next_letter: str) -> float:
             letter.
     """
     avg_delay = random.randint(120, 170) / 1000  # in seconds
-    if previous_letter + next_letter in HAND_ALTERNATION:
+    if (previous_letter + next_letter).lower() in HAND_ALTERNATION:
         # Two letters typed by different hands are 30-60ms faster.
         faster_by = random.randint(30, 60) / 1000
         avg_delay -= faster_by
