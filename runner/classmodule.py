@@ -94,12 +94,17 @@ class Commands:
         if not isinstance(secret, str):
             raise TypeError(f"Secret must be of type string, not {type(secret)}.")
 
+        listed = list(secret)
+        # Adding newline if missing.
+        if listed[-1] != "\n":
+            listed.append("\n")
+
+        # Turning off echo and logging. We don't want the password to be shown.
         child.logfile = None
-        child.logfile_read = sys.stdout
-        child.delaybeforesend = 1
-        child.sendline(secret)
+        for item in listed:
+            child.send(item)
+        # Getting things back to normal.
         child.logfile = sys.stdout
-        child.logfile_read = None
 
     def is_password(self, command: Union[str, dict]) -> bool:
         """
@@ -159,8 +164,8 @@ class Commands:
         in the environment variables.
 
         """
-        child = pexpect.spawn("bash", echo=False)
-        child.logfile = sys.stdout.buffer
+        child = pexpect.spawn("bash", echo=False, encoding="utf-8")
+        child.logfile = sys.stdout
         child.expect("[#$%]")
 
         for index, command in enumerate(self.commands):
@@ -170,7 +175,7 @@ class Commands:
             if self.is_password(command):
 
                 password = self.get_secret(command)
-                self.fake_typing(child, password)
+                self.fake_typing_secret(child, password)
 
             else:
 
