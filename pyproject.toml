@@ -10,6 +10,7 @@ python = "^3.7.0"
 PyYAML = "^5.4.1"
 pexpect = "^4.8.0"
 click = "^7.1.2"
+termcolor = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 
