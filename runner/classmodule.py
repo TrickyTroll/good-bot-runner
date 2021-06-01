@@ -33,10 +33,10 @@ from runner import human_typing
 class Commands:
     def __init__(self, commands: list, expect: list):
         # The first command will be typed using fake_typing.
-        self.initial = commands[0]
         # The other commands will be sent using send.
-        self.commands = commands[1:]
+        self.commands = commands
         self.expect = expect
+        # `dir_name` should be set dynamically.
         self.dir_name = "commands"
 
     def fake_start(self, text: str) -> None:
@@ -144,28 +144,43 @@ class Commands:
     def run(self) -> None:
         """Runs the command and anwsers all prompts for the sequence.
 
-        Returns:
-            None: None
+        This starts by spawning a `bash` process and expecting the
+        bash prompt.
+
+        After the prompt has been detected, the first item in the
+        list of commands is sent to the child process using `Commands`'
+        `fake_typing()` method.
+
+        The program then expects the first iem in the `expect` list.
+        These steps are repeated until every command has been sent and
+        completed.
+
+        `password` elements are replaced by their corresponding value
+        in the environment variables.
+
         """
         child = pexpect.spawn("bash", echo=False)
         child.logfile = sys.stdout.buffer
         child.expect("[#$%]")
 
-        self.fake_typing(child, self.initial)
-        for i in range(len(self.commands)):
-            if self.is_password(self.commands[i]):
-                child.expect(self.expect[i])
-                password = self.get_secret(self.commands[i])
+        for index, command in enumerate(self.commands):
+
+            expect = self.expect[index]
+
+            if self.is_password(command):
+                password = self.get_secret(command)
                 self.fake_typing(child, password)
             else:
-                if self.expect[i] == "prompt":
+                if expect == "prompt":
                     child.expect("[#$%]")
                 else:
-                    child.expect(self.expect[i])
+                    child.expect(expect)
 
-                self.fake_typing(child, self.commands[i])
+                self.fake_typing(child, command)
 
-        child.expect("[#$%]")
+            child.expect(expect)
+
+        # child.expect("[#$%]")
         child.close()
 
         return None
