@@ -166,7 +166,7 @@ class Commands:
         """
         child = pexpect.spawn("bash", echo=False, encoding="utf-8")
         child.logfile = sys.stdout
-        child.expect("[#$%]")
+        child.expect("[#\$%]")
 
         for index, command in enumerate(self.commands):
 
@@ -182,13 +182,10 @@ class Commands:
                 self.fake_typing(child, command)
 
             if expect == "prompt":
-                child.expect("[#$%]")
+                child.expect("[#\$%]")
             else:
                 child.expect(expect)
 
-
-
-        # child.expect("[#$%]")
         child.close()
 
         return None

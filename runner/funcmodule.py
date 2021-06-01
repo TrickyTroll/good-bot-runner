@@ -54,10 +54,14 @@ def check_config(conf: dict) -> None:
             if not isinstance(item, (str, dict)):
 
                 print("Warning: keys should probably be of type `str` or `dict`.")
-                print(f"The parameter '{item}' from '{key}' has been interpreted as '{type(value)}'.")
-                shoud_continue = input("Are you sure you still want to proceed (yes/no)? ")
+                print(
+                    f"The parameter '{item}' from '{key}' has been interpreted as '{type(value)}'."
+                )
+                shoud_continue = input(
+                    "Are you sure you still want to proceed (yes/no)? "
+                )
 
-                if (shoud_continue.lower() not in ("yes", "no")):
+                if shoud_continue.lower() not in ("yes", "no"):
                     while not shoud_continue.lower() in ("yes", "no"):
                         shoud_continue = input(
                             "Are you sure you still want to proceed (yes/no)? "

@@ -40,6 +40,7 @@ def gb_run(input: click.File) -> None:
 
     return None
 
+
 # if __name__ == "__main__":
 #     gb_run()
 def main():
