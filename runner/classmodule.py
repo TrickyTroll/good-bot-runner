@@ -168,17 +168,20 @@ class Commands:
             expect = self.expect[index]
 
             if self.is_password(command):
+
                 password = self.get_secret(command)
                 self.fake_typing(child, password)
+
             else:
-                if expect == "prompt":
-                    child.expect("[#$%]")
-                else:
-                    child.expect(expect)
 
                 self.fake_typing(child, command)
 
-            child.expect(expect)
+            if expect == "prompt":
+                child.expect("[#$%]")
+            else:
+                child.expect(expect)
+
+
 
         # child.expect("[#$%]")
         child.close()
