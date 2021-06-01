@@ -19,8 +19,26 @@ text file.
 
 import sys
 import yaml
+from termcolor import colored
 from io import TextIOWrapper
 
+def check_config(conf: dict) -> None:
+    if len(conf.keys()) > 2:
+        raise KeyError(f"Your configuration file must only have 2 keys, not {len(conf.keys())}")
+    for key, value in conf.items():
+        if key != "commands" or key != "expect":
+            raise KeyError("""\
+                Every key in your configuration file must be either
+                'commands' or 'expect'.""")
+        if not isinstance(value, (str, dict)):
+            warn = colored("Warning: keys should probably be of type `str` or `dict`.")
+            print(warn)
+            shoud_continue = input("Are you sure you still want to proceed (yes/no)? ")
+            while not shoud_continue.lower() in ("yes", "no"):
+                shoud_continue = input("Are you sure you still want to proceed (yes/no)? ")
+            if shoud_continue.lower() != "yes":
+                sys.exit
+        
 
 def parse_config(conf: TextIOWrapper) -> dict:
     """Parses a config file to generate a dict.
