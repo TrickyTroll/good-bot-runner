@@ -43,9 +43,7 @@ def check_config(conf: dict) -> None:
         raise KeyError(f"Your configuration file must only have 2 keys, not {len(conf.keys())}")
     for key, value in conf.items():
         if key != "commands" or key != "expect":
-            raise KeyError("""\
-                Every key in your configuration file must be either
-                'commands' or 'expect'.""")
+            raise KeyError("Every key in your configuration file must be either 'commands' or 'expect'.")
         if not isinstance(value, (str, dict)):
             warn = colored("Warning: keys should probably be of type `str` or `dict`.")
             print(warn)
@@ -79,6 +77,8 @@ def parse_config(conf: TextIOWrapper) -> dict:
     if type(parsed) != dict:
         print("Wrong type of config file.")
         sys.exit()
+    
+    check_config(parsed)
 
     return parsed
 
