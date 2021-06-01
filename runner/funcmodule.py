@@ -19,7 +19,6 @@ text file.
 
 import sys
 import yaml
-from termcolor import colored
 from io import TextIOWrapper
 
 
@@ -45,20 +44,28 @@ def check_config(conf: dict) -> None:
             f"Your configuration file must only have 2 keys, not {len(conf.keys())}"
         )
     for key, value in conf.items():
-        if key != "commands" or key != "expect":
+        if key not in ("commands", "expect"):
             raise KeyError(
                 "Every key in your configuration file must be either 'commands' or 'expect'."
             )
-        if not isinstance(value, (str, dict)):
-            warn = colored("Warning: keys should probably be of type `str` or `dict`.")
-            print(warn)
-            shoud_continue = input("Are you sure you still want to proceed (yes/no)? ")
-            while not shoud_continue.lower() in ("yes", "no"):
-                shoud_continue = input(
-                    "Are you sure you still want to proceed (yes/no)? "
-                )
-            if shoud_continue.lower() != "yes":
-                sys.exit
+        # value is of type `list`
+        for item in value:
+
+            if not isinstance(item, (str, dict)):
+
+                print("Warning: keys should probably be of type `str` or `dict`.")
+                print(f"The parameter '{item}' from '{key}' has been interpreted as '{type(value)}'.")
+                shoud_continue = input("Are you sure you still want to proceed (yes/no)? ")
+
+                if (shoud_continue.lower() not in ("yes", "no")):
+                    while not shoud_continue.lower() in ("yes", "no"):
+                        shoud_continue = input(
+                            "Are you sure you still want to proceed (yes/no)? "
+                        )
+
+                if shoud_continue.lower() != "yes":
+                    print("Quitting...")
+                    sys.exit()
 
 
 def parse_config(conf: TextIOWrapper) -> dict:
