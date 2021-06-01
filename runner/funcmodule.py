@@ -23,6 +23,22 @@ from termcolor import colored
 from io import TextIOWrapper
 
 def check_config(conf: dict) -> None:
+    """Checks the parsed configuration file for wrong types and arguments.
+
+    This helps reduce weird error messages later on. It is easier for the
+    user to interpret curated error messages than Python's default ones.
+    This is especially true for `Pexpect`'s error messages. Timeouts can
+    take a long time and the messages are often hard to read.
+
+    Args:
+        conf (dict): The parsed configuration file. This should be returned
+            by `parse_config()`
+
+    Raises:
+        KeyError: If the configuration file has too many keys (more than 2).
+        KeyError: If a key is named differently than `commands` or `expect`.
+    """    
+
     if len(conf.keys()) > 2:
         raise KeyError(f"Your configuration file must only have 2 keys, not {len(conf.keys())}")
     for key, value in conf.items():
