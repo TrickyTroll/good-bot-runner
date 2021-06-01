@@ -131,7 +131,7 @@ def pick_typo(next_letter: str) -> Union[str, None]:
     if is_typo():
 
         try:
-            plausible_for_letter = PLAUSIBLE_TYPOS[next_letter]
+            plausible_for_letter = PLAUSIBLE_TYPOS[next_letter.lower()]
             # Pick a random typo in the list associated with the
             # key.
             typo = random.choice(plausible_for_letter)
@@ -166,7 +166,7 @@ def get_delay(previous_letter: str, next_letter: str) -> float:
             letter.
     """
     avg_delay = random.randint(120, 170) / 1000  # in seconds
-    if previous_letter + next_letter in HAND_ALTERNATION:
+    if (previous_letter + next_letter).lower() in HAND_ALTERNATION:
         # Two letters typed by different hands are 30-60ms faster.
         faster_by = random.randint(30, 60) / 1000
         avg_delay -= faster_by
@@ -231,7 +231,14 @@ def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
         child (pexpect.pty_spawn.spawn): The child process to which
             the sentence will be sent.
         sentence (str): What will be typed and sent to the process.
+
+    Raises:
+        TypeError: Raises a `TypeError` if the `sentence` argument
+        is not of type `str`. This makes sure that once loaded, the
+        yaml configuration file did not contain other types.
     """
+    if not isinstance(sentence, str):
+        raise TypeError(f"Cannot type a {type(sentence)}.")
 
     letters: List[str] = list(sentence)
 

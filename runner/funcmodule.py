@@ -22,6 +22,52 @@ import yaml
 from io import TextIOWrapper
 
 
+def check_config(conf: dict) -> None:
+    """Checks the parsed configuration file for wrong types and arguments.
+
+    This helps reduce weird error messages later on. It is easier for the
+    user to interpret curated error messages than Python's default ones.
+    This is especially true for `Pexpect`'s error messages. Timeouts can
+    take a long time and the messages are often hard to read.
+
+    Args:
+        conf (dict): The parsed configuration file. This should be returned
+            by `parse_config()`
+
+    Raises:
+        KeyError: If the configuration file has too many keys (more than 2).
+        KeyError: If a key is named differently than `commands` or `expect`.
+    """
+
+    if len(conf.keys()) > 2:
+        raise KeyError(
+            f"Your configuration file must only have 2 keys, not {len(conf.keys())}"
+        )
+    for key, value in conf.items():
+        if key not in ("commands", "expect"):
+            raise KeyError(
+                "Every key in your configuration file must be either 'commands' or 'expect'."
+            )
+        # value is of type `list`
+        for item in value:
+
+            if not isinstance(item, (str, dict)):
+
+                print("Warning: keys should probably be of type `str` or `dict`.")
+                print(f"The parameter '{item}' from '{key}' has been interpreted as '{type(value)}'.")
+                shoud_continue = input("Are you sure you still want to proceed (yes/no)? ")
+
+                if (shoud_continue.lower() not in ("yes", "no")):
+                    while not shoud_continue.lower() in ("yes", "no"):
+                        shoud_continue = input(
+                            "Are you sure you still want to proceed (yes/no)? "
+                        )
+
+                if shoud_continue.lower() != "yes":
+                    print("Quitting...")
+                    sys.exit()
+
+
 def parse_config(conf: TextIOWrapper) -> dict:
     """Parses a config file to generate a dict.
 
@@ -30,7 +76,7 @@ def parse_config(conf: TextIOWrapper) -> dict:
 
     Args:
         conf (TextIOWrapper): The opened text file. This should
-        be created by the 
+        be created by the
         [click](https://click.palletsprojects.com/en/7.x/)
         library.
 
@@ -45,6 +91,8 @@ def parse_config(conf: TextIOWrapper) -> dict:
     if type(parsed) != dict:
         print("Wrong type of config file.")
         sys.exit()
+
+    check_config(parsed)
 
     return parsed
 

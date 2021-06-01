@@ -23,7 +23,9 @@ todo.run()
 """
 import pexpect
 import sys
+import os
 import time
+from typing import Union, List, Dict
 
 from runner import human_typing
 
@@ -31,10 +33,10 @@ from runner import human_typing
 class Commands:
     def __init__(self, commands: list, expect: list):
         # The first command will be typed using fake_typing.
-        self.initial = commands[0]
         # The other commands will be sent using send.
-        self.commands = commands[1:]
+        self.commands = commands
         self.expect = expect
+        # `dir_name` should be set dynamically.
         self.dir_name = "commands"
 
     def fake_start(self, text: str) -> None:
@@ -80,8 +82,7 @@ class Commands:
         """
         human_typing.type_sentence(child, text)
 
-    def fake_typing_secret(self, secret: str,
-                           child: pexpect.pty_spawn.spawn) -> None:
+    def fake_typing_secret(self, child: pexpect.pty_spawn.spawn, secret: str) -> None:
         """To fake type a password or other secret. This ensures that the
         password won't be recorded.
 
@@ -89,64 +90,105 @@ class Commands:
             secret (str): The secret that has to be typed
             child (pexpect.pty_spawn.spawn): The child process.
 
-        Returns:
-            None: None
         """
+        if not isinstance(secret, str):
+            raise TypeError(f"Secret must be of type string, not {type(secret)}.")
+
+        listed = list(secret)
+        # Adding newline if missing.
+        if listed[-1] != "\n":
+            listed.append("\n")
+
+        # Turning off echo and logging. We don't want the password to be shown.
         child.logfile = None
-        child.logfile_read = sys.stdout
-        child.delaybeforesend = 1
-        child.sendline(secret)
+        for item in listed:
+            child.send(item)
+        # Getting things back to normal.
         child.logfile = sys.stdout
-        child.logfile_read = None
 
-        return None
-
-    def is_password(self, returning: str) -> bool:
-        """Checks if the next thing to return is as password.
+    def is_password(self, command: Union[str, dict]) -> bool:
+        """
+        Checks if the next thing that will be sent to the child
+        process is a password.
 
         Args:
-            returning (str): The string that will be typed ot answer
-            the prompt.
+            command (Union[str, dict]): The next command to send
+                to the child process.
 
         Returns:
-            bool: Wether the answer will be a password or not.
+            bool: Whether or not `command` is a password.
         """
 
-        password_string = returning.split()
-
-        if password_string[0] == "Password":
-
-            return True
+        if isinstance(command, dict):
+            if "password" in command.keys():
+                return True
 
         return False
+
+    def get_secret(self, command: dict) -> str:
+        """Gets a password value from an environment variable.
+
+        The variable should be defined by the user in the project's
+        configuration file.
+
+        Args:
+            command (dict): A value in the configuration
+                file's `commands` field. This value can only
+                be of type `dict` since `get_secret()` should only
+                be called after checking that the `command` is a
+                password to send.
+
+        Returns:
+            str: A password to send to the child process.
+        """
+        env_key = [item for item in command.values()][0]
+        password = os.getenv(env_key)
+
+        return password
 
     def run(self) -> None:
         """Runs the command and anwsers all prompts for the sequence.
 
-        Returns:
-            None: None
+        This starts by spawning a `bash` process and expecting the
+        bash prompt.
+
+        After the prompt has been detected, the first item in the
+        list of commands is sent to the child process using `Commands`'
+        `fake_typing()` method.
+
+        The program then expects the first iem in the `expect` list.
+        These steps are repeated until every command has been sent and
+        completed.
+
+        `password` elements are replaced by their corresponding value
+        in the environment variables.
+
         """
-        child = pexpect.spawn("bash", echo=False)
-        child.logfile = sys.stdout.buffer
-        # TODO: This should be changed for a better regex
-        # (check for the EOL).
+        child = pexpect.spawn("bash", echo=False, encoding="utf-8")
+        child.logfile = sys.stdout
         child.expect("[#$%]")
 
-        self.fake_typing(child, self.initial)
-        for i in range(len(self.commands)):
-            if self.is_password(self.commands[i]):
-                # TODO: This is where the password getter shoud happen.
-                print("Passwords havent been implemented yet.")
-                sys.exit()
+        for index, command in enumerate(self.commands):
+
+            expect = self.expect[index]
+
+            if self.is_password(command):
+
+                password = self.get_secret(command)
+                self.fake_typing_secret(child, password)
+
             else:
-                if self.expect[i] == "prompt":
-                    child.expect("[#$%]")
-                else:
-                    child.expect(self.expect[i])
 
-                self.fake_typing(child, self.commands[i])
+                self.fake_typing(child, command)
 
-        child.expect("[#$%]")
+            if expect == "prompt":
+                child.expect("[#$%]")
+            else:
+                child.expect(expect)
+
+
+
+        # child.expect("[#$%]")
         child.close()
 
         return None

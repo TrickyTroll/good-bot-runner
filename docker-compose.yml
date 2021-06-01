@@ -12,6 +12,12 @@ services:
     build: .
     command: >
         sh -c "pip install . &&
-               runner ./tests/examples/test_conf.yaml"
+               runner ./samples/typos.yaml"
     volumes:
         - .:/app
+  
+  passwords:
+    build: .
+    command: >
+      sh -c "pip install . &&
+            runner ./samples/passwords.yaml"
