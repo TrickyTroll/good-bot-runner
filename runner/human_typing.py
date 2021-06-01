@@ -231,7 +231,14 @@ def type_sentence(child: pexpect.pty_spawn.spawn, sentence: str) -> None:
         child (pexpect.pty_spawn.spawn): The child process to which
             the sentence will be sent.
         sentence (str): What will be typed and sent to the process.
+
+    Raises:
+        TypeError: Raises a `TypeError` if the `sentence` argument
+        is not of type `str`. This makes sure that once loaded, the
+        yaml configuration file did not contain other types.
     """
+    if not isinstance(sentence, str):
+        raise TypeError(f"Cannot type a {type(sentence)}.")
 
     letters: List[str] = list(sentence)
 
