@@ -6,4 +6,4 @@ COPY . .
 
 RUN pip3 install .
 
-CMD ["runner", "./samples/test_conf.yaml"]
+CMD [ "runner" ]
