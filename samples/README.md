@@ -5,7 +5,7 @@ used to lean possible ways `runner` can be used.
 
 ## Test configuration
 
-[This](test_conf.yaml) sample show how to tell the program to type basic
+[This](./basic/test_conf.yaml) sample show how to tell the program to type basic
 shell commands and expect the prompt.
 
 ## With passwords
@@ -21,5 +21,5 @@ environment file.
 
 ## Typos example
 
-The [typos example](typos.yaml) just makes the program type a lot
+The [typos example](./typos/typos.yaml) just makes the program type a lot
 of characters to increase the chances of making a typo.
