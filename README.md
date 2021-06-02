@@ -110,6 +110,58 @@ commands:
 
 > **Note**: Even if you only want to run one command, you must write it as a list. This is due to the fact that `runner` will iterate over the items associated with `commands`, assuming that it is a list. A string is also iterable, but the result of each iteration won’t be a functional shell command (probably).
 
+#### Using passwords
+
+`runner` also supports the use of secrets and passwords. Passwords are necessary when recording
+commands that must be ran as root, for example. They can also be used to connect to a remote
+machine using `ssh` with a password.
+
+Passwords are sent to the program using environment variables. If you are running `runner`
+directly on your machine, you can set those variables using the `export` command. This example
+binds a password to the `SOME_PASSWORD` variable. This variable can then be used in
+[your script](samples/with_passwords/passwords.yaml) to respond to a password prompt.
+
+```shell
+export SOME_PASSWORD=popcorn-TUB-pigskin-randy
+```
+
+Please note that this only works on UNIX-like systems. If you are using Windows, you will
+get a much smoother experience with the [Docker image](https://hub.docker.com/r/trickytroll/good-bot-runner/tags?page=1&ordering=last_updated).
+
+If you are using the Docker image you can write a text file that contains all of your
+variables on different lines.
+
+```txt
+SOME_PASSWORD=popcorn-TUB-pigskin-randy
+ANOTHER_PASSWORD=odious-cloy-SQUIRE-register
+```
+
+Then, when using the `docker run` command, add the `--env-file` flag to your command with
+the path towards your text file as an argument.
+
+When writing the `.yaml` configuration file, you can tell `runner` which environment
+variable to look for using the `password` keyword.
+
+```yaml
+commands:
+  - ssh some-user@dev-machine
+  - password: SOME_PASSWORD
+expect:
+  - assword
+  - prompt
+```
+
+This last example will use the previously set `SOME_PASSWORD` variable to answer to the
+ssh command's password prompt.
+
+You can set as many variables as you want, but your passwords should be replaced after 
+being used with this program.
+
+> ⚠️ **Warning:** While version controlling your documentation scrips can be a good idea, always
+> be careful **not** to add your `.env` files to your version control history. It is also a
+> *strongly* recommended that the passwords used with `runner` are removed from your systems and
+> applications afterwards.
+
 ### expect
 
 The only other key that you should put in your configuration file is `expect`. As with the `commands` key, expect should be unindented and written like so:
