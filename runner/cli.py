@@ -11,11 +11,12 @@ See click's
 for more information on how decorators affect the ``gb_run()`` function.
 """
 
+import os
 import sys
 import click
+import pathlib
 from runner import classmodule
 from runner import funcmodule
-
 
 @click.command()
 @click.argument("input", type=click.File("r"))
