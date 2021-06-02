@@ -5,6 +5,14 @@ from pathlib import Path
 
 CONFIGPATH = Path("./tests/examples")
 
+class TestConfigTest(unittest.TestCase):
+    """Testing that the config checker raises the right errors."""
+    def test_raises_too_many_keys(self):
+        pass
+    def test_raises_bad_key(self):
+        pass
+    def wrong_item_type(self):
+        pass
 
 class TestParsing(unittest.TestCase):
     def test_returns_dict(self):
