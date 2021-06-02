@@ -23,4 +23,6 @@ services:
     container_name: good-bot-runner
     volumes:
         - .:/data
+    environment:
+        - SSH_TRICKY=yonder-nomad-DECOY-rumba
     command: runner /data/passwords.yaml
