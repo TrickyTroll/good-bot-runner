@@ -113,10 +113,10 @@ commands:
 #### Using passwords
 
 `runner` also supports the use of secrets and passwords. Passwords are necessary when recording
-commands that must be ran as root, for example. They can also be used to connect to a remote
-machine using `ssh` with a password.
+commands that must be run as root, for example. They can also be used to connect to a remote
+machine thanks to `ssh` with a password.
 
-Passwords are sent to the program using environment variables. If you are running `runner`
+Passwords are sent to the program with the help of environment variables. If you are running `runner`
 directly on your machine, you can set those variables using the `export` command. This example
 binds a password to the `SOME_PASSWORD` variable. This variable can then be used in
 [your script](samples/with_passwords/passwords.yaml) to respond to a password prompt.
@@ -128,7 +128,7 @@ export SOME_PASSWORD=popcorn-TUB-pigskin-randy
 Please note that this only works on UNIX-like systems. If you are using Windows, you will
 get a much smoother experience with the [Docker image](https://hub.docker.com/r/trickytroll/good-bot-runner/tags?page=1&ordering=last_updated).
 
-If you are using the Docker image you can write a text file that contains all of your
+If you are using the Docker image, you can write a text file that contains all of your
 variables on different lines.
 
 ```txt
@@ -140,7 +140,7 @@ Then, when using the `docker run` command, add the `--env-file` flag to your com
 the path towards your text file as an argument.
 
 When writing the `.yaml` configuration file, you can tell `runner` which environment
-variable to look for using the `password` keyword.
+variable to look for with the `password` keyword.
 
 ```yaml
 commands:
@@ -164,7 +164,7 @@ being used with this program.
 
 ### expect
 
-The only other key that you should put in your configuration file is `expect`. As with the `commands` key, expect should be unindented and written like so:
+The only other key that you should put in your configuration file is `expect`. As with the `commands` key, expect should not be indented and written like so:
 
 ```yaml
 expect:
