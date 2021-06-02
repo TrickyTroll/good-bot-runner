@@ -60,7 +60,7 @@ HAND_ALTERNATION: List[str] = [
     "pe",
 ]
 
-PLAUSIBLE_TYPOS: Dict[str, str] = {  # In keyboard order.
+PLAUSIBLE_TYPOS: Dict[str, List[str]] = {  # In keyboard order.
     "q": ["w", "a"],
     "w": ["q", "e", "s"],
     "e": ["w", "r", "d"],
@@ -127,6 +127,8 @@ def pick_typo(next_letter: str) -> Union[str, None]:
     Returns:
         str/None: The typo or `None` if there is no typo.
     """
+
+    typo: Union[str, None] = None
 
     if is_typo():
 
