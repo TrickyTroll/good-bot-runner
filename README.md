@@ -154,12 +154,12 @@ expect:
 This last example will use the previously set `SOME_PASSWORD` variable to answer to the
 ssh command's password prompt.
 
-You can set as many variables as you want, but your passwords should be replaced after 
+You can set as many variables as you want, but your passwords should be replaced after
 being used with this program.
 
 > ⚠️ **Warning:** While version controlling your documentation scrips can be a good idea, always
 > be careful **not** to add your `.env` files to your version control history. It is also a
-> *strongly* recommended that the passwords used with `runner` are removed from your systems and
+> _strongly_ recommended that the passwords used with `runner` are removed from your systems and
 > applications afterwards.
 
 ### expect
