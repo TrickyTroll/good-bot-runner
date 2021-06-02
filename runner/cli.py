@@ -33,9 +33,9 @@ def in_docker() -> bool:
     )
 
 if in_docker():
-    PROJECT_ROOT = pathlib.Path(".")
+    DATA_DIR = pathlib.Path(".")
 else:
-    PROJECT_ROOT = pathlib.Path("/project")
+    DATA_DIR = pathlib.Path("/data")
 
 @click.command()
 @click.argument("input", type=str)
@@ -44,7 +44,7 @@ def gb_run(input: str) -> None:
     It runs the command according to the configuration file that is
     passed as the 'input' argument
     """
-    parsed = funcmodule.parse_config(PROJECT_ROOT / pathlib.Path(input))
+    parsed = funcmodule.parse_config(DATA_DIR / pathlib.Path(input))
 
     try:
         commands = parsed["commands"]
