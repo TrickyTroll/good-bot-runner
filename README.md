@@ -27,6 +27,15 @@ from the root of this repo.
 `runner` can be installed using `pip`. This means that you need a working installation of Python and Pip. See: [https://pip.pypa.io/en/stable/installing/](https://pip.pypa.io/en/stable/installing/).
 Since this program is _not_ distributed on [pypi](https://pypi.org), you will need to download a copy of this repo first. This can by downloading the `.zip` archive or by cloning this repo.
 
+### Docker install
+
+If you already have Docker installed on your system, you can simply pull the image to
+get started.
+
+```shell
+docker pull trickytroll/good-bot-runner:latest
+```
+
 ### User install
 
 You should download the latest release on the release [page](https://github.com/TrickyTroll/good-bot-runner/releases/tag/v1.0). From the releases page:
