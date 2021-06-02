@@ -18,14 +18,33 @@ import pathlib
 from runner import classmodule
 from runner import funcmodule
 
+def in_docker() -> bool:
+    """Checks if code is currently running in a Docker container.
+    Checks if Docker is in control groups or if there is a `.dockerenv`
+    file at the filesystem's root directory.
+    Returns:
+        bool: Whether or not the code is running in a Docker container.
+    """
+    path = "/proc/self/cgroup"
+    return (
+        os.path.exists("/.dockerenv")
+        or os.path.isfile(path)
+        and any("docker" in line for line in open(path))
+    )
+
+if in_docker():
+    PROJECT_ROOT = pathlib.Path(".")
+else:
+    PROJECT_ROOT = pathlib.Path("/project")
+
 @click.command()
-@click.argument("input", type=click.File("r"))
-def gb_run(input: click.File) -> None:
+@click.argument("input", type=str)
+def gb_run(input: str) -> None:
     """Runs a command using the Commands class.
     It runs the command according to the configuration file that is
     passed as the 'input' argument
     """
-    parsed = funcmodule.parse_config(input)
+    parsed = funcmodule.parse_config(PROJECT_ROOT / pathlib.Path(input))
 
     try:
         commands = parsed["commands"]
