@@ -107,8 +107,5 @@ def parse_config(conf_path: pathlib.Path) -> dict:
 #######################################################################
 
 if __name__ == "__main__":
-    import os
 
-    current_dir = os.getcwd()
-    with open("./runner/tests/examples/test_conf.yaml", "r") as stream:
-        parse_config(stream)
+    parse_config(pathlib.Path("./runner/tests/examples/test_conf.yaml"))
