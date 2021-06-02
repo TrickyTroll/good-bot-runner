@@ -6,4 +6,6 @@ COPY . .
 
 RUN pip3 install .
 
-CMD [ "runner" ]
+WORKDIR /data
+
+ENTRYPOINT [ "runner" ]
