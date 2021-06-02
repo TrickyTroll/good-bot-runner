@@ -125,7 +125,7 @@ class Commands:
 
         return False
 
-    def get_secret(self, command: dict) -> str:
+    def get_secret(self, command: dict) -> Union[str, None]:
         """Gets a password value from an environment variable.
 
         The variable should be defined by the user in the project's
@@ -139,7 +139,9 @@ class Commands:
                 password to send.
 
         Returns:
-            str: A password to send to the child process.
+            Union[str, None]: A password to send to the child process.
+                If no corresponding environment variable was found,
+                returns None.
         """
         env_key = [item for item in command.values()][0]
         password = os.getenv(env_key)
