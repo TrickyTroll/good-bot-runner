@@ -17,6 +17,8 @@ remote container.
 This example also provides an [example](with_passwords/.env) of an
 environment file.
 
+![The program answers to password prompts](img/with-password.gif)
+
 ## Typos example
 
 The [typos example](typos.yaml) just makes the program type a lot
