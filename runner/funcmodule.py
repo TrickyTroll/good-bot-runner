@@ -17,9 +17,9 @@ parsed = funcmodule.parse_config(conf)
 text file.
 """
 
+import pathlib
 import sys
 import yaml
-from io import TextIOWrapper
 
 
 def check_config(conf: dict) -> None:
@@ -72,17 +72,15 @@ def check_config(conf: dict) -> None:
                     sys.exit()
 
 
-def parse_config(conf: TextIOWrapper) -> dict:
+def parse_config(conf_path: pathlib.Path) -> dict:
     """Parses a config file to generate a dict.
 
     Should only be used on the files that contain a command.
     Not to be used on the main conf file.
 
     Args:
-        conf (TextIOWrapper): The opened text file. This should
-        be created by the
-        [click](https://click.palletsprojects.com/en/7.x/)
-        library.
+        conf_path (pathlib.Path): The path to the user's
+        configuration file.
 
     Returns:
         dict: A dict that contains info on the command. The
@@ -90,6 +88,9 @@ def parse_config(conf: TextIOWrapper) -> dict:
         should be `lists` of shell commands or stuff to
         expect before running those shell commands.
     """
+    with open(conf_path, 'r') as stream:
+        conf = stream.read()
+
     parsed = yaml.safe_load(conf)
 
     if type(parsed) != dict:
