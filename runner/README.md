@@ -4,9 +4,47 @@ This `README` contains useful information if you want to work
 on `runner`. For more general documenation, see the project's
 [main](../README.md) `README`.
 
-## Typing
+## Dependencies
+
+To develop `runner` the [Poetry](https://python-poetry.org) dependency
+manager was used. To install Poetry, see their
+[installation](https://python-poetry.org/docs/#installation) instructions.
+
+When running `pip install .` in this project's root
+directory, every dependency mentionned in the `pyproject.toml` file
+will be installed. **This does not include development dependencies.**
+
+To install de latter, you will need to run the following command:
+
+```shell
+poetry install .
+```
 
 ## Testing
+
+[Some tests](./tests) are written under the `/tests` directory.
+Once you have installed every required [dependency](#dependencies),
+you can simply run the following command from this project's root
+directory.
+
+```shell
+pytest .
+```
+
+Testing is also done automatically in the project's `main` branch
+using Github actions.
+
+### Writing tests
+
+`runner` is tested using the `unittest` Python module. If you
+are not familiar with `unittest`, please refer to the
+[documentation](https://docs.python.org/3/library/unittest.html).
+
+`pytest` will run every function with a name that starts with
+`test_`. It is important to name your tests properly or else
+they wont be executed.
+
+## Typing
 
 ## Modules
 
