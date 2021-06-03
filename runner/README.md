@@ -49,6 +49,19 @@ they wont be executed.
 
 ## Typing
 
+Most of `runner`'s code is typed. Type checking is done automatically
+on every merge with the `main` branch. This also works with pull
+requests.
+
+The type checking is done using `mypy`. If you have installed every
+dev dependencies, you should be able to test the program by running:
+
+```shell
+mypy runner
+```
+
+from the programs root directory.
+
 ## Modules
 
 ### `human_typing.py`
