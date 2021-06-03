@@ -64,6 +64,44 @@ from the programs root directory.
 
 ## Modules
 
+### `classmodule.py`
+
+[`classmodule.py`](classmodule.py) contains the main `Commands`
+class. This class is used to create `Commands` object that can
+run commands on a `bash` prompt.
+
+While the human-like typing is done in the
+[`human_typing`](#human_typingpy) module, process spawing and
+interaction is done in this module.
+
+**This is where to start if you want to change the way `runner`**
+**spawns processes and interacts with them.**
+
+`runner` uses the Pexpect Python module to spawn processes and
+interact with them. The child object that is used in many functions
+is an object of type `pty_spawn.spawn` that has many methods to
+allow for interaction with a process. For more information in Pexpect,
+please refer to their [documentation](https://pexpect.readthedocs.io/en/stable/).
+
+The `classmodule` also takes care of the **password handling**.
+Functions that retrieve passwords from environment variables are
+defined in the `Commands` object.
+
+#### `Commands` objects methods
+
+* `fake_typing()`: Uses the `type_sentence` method from `human_typing` to
+  "type" a string of text to a child process.
+* `fake_typing_secret()`: Similar to `fake_typing` but turns of echoing
+  and stops printing the results to `stdout`. This makes sure that passwords
+  are not recorded.
+* `is_password()`: Checks if the next thing to send to the process is a
+  password.
+* `get_secret()`: Gets a password from an environment variable mentionned
+  in the user's configuration file.
+* `run()`: Uses every other methods to start the `bash` process and
+  interact with it until every command defined by the used has been
+  sent.
+
 ### `funcmodule.py`
 
 The [funcmodule](funcmodule.py) contains every function used by
