@@ -33,9 +33,9 @@ def in_docker() -> bool:
     )
 
 if in_docker():
-    DATA_DIR = pathlib.Path(".")
-else:
     DATA_DIR = pathlib.Path("/data")
+else:
+    DATA_DIR = pathlib.Path(".")
 
 @click.command()
 @click.argument("input", type=str)
