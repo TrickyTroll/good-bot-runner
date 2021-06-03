@@ -106,9 +106,9 @@ def is_typo() -> bool:
         bool: Whether or not there will be a typo.
 
     """
-    error_percent = random.randrange(1, 4) / 100  # Stop isn't included.
+    error_percent = random.randint(1, 4) #3.2 rounded up
     # Randint includes the upper bound.
-    return random.randint(0, 100) < error_percent
+    return random.randint(1, 100) <= error_percent
 
 
 def pick_typo(next_letter: str) -> Union[str, None]:
