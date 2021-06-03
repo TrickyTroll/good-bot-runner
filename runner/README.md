@@ -64,6 +64,14 @@ from the programs root directory.
 
 ## Modules
 
+### `funcmodule.py`
+
+The [funcmodule](funcmodule.py) contains every function used by
+the command line interface to parse instrution files.
+
+It is the file to modify if you want to improve the parser or
+interact with the user before anything else runs.
+
 ### `human_typing.py`
 
 The [human_typing](human_typing.py) module contains every function
