@@ -124,6 +124,19 @@ def is_pause() -> bool:
     pause_percent = random.randint(20,30)
     return random.randint(1, 100) <= pause_percent
 
+def pause_time() -> float:
+    """Returns for how long the program should pause when typing.
+
+    The short pause time is based on what felt more natural when
+    testing.
+
+    Returns:
+        float: How long the pause shoud last **in seconds**.
+    """
+    # Between .05 to .5 seconds
+    pause_ms = random.randint(50, 500)
+    return pause_ms / 1000 # returned pause is in seconds.
+
 def pick_typo(next_letter: str) -> Union[str, None]:
     """Picks a typo according to the next letter to type.
 
