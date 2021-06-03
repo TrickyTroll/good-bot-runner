@@ -243,14 +243,15 @@ def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> No
         previous (str): The last letter that has been sent to the process.
         next (str): The next letter to send to the process.
     """
-    delay: float = get_delay(previous, next)
     typo: Union[str, None] = pick_typo(next)
+
     if next == " ":
         # If the next char to type is a space, compute chances of taking
         # a pause.
         if is_pause():
             time.sleep(pause_time())
     else:
+        delay: float = get_delay(previous, next)
         time.sleep(delay)
     if typo:
         type_typo(child, next, typo)
