@@ -23,3 +23,5 @@ environment file.
 
 The [typos example](./typos/typos.yaml) just makes the program type a lot
 of characters to increase the chances of making a typo.
+
+![The program can make typos just like a real person](img/typos_demo.gif)
