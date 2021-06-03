@@ -71,6 +71,24 @@ by the `get_delay()` function.
 
 ##### Delays between words
 
+People sometimes take pauses while typing. To mimic this comportement,
+`runner` has a 20 to 30% chances of taking a .5 to 1 second pauses
+between words.
+
+> **Note:** These numbers are not based on any research. They were
+> just picked based on what felt more natural during trials.
+
+Pauses are introduced in the `type_letters()` function by checking
+if the next character is a space.
+
+```python
+if next == " ":
+    # If the next char to type is a space, compute chances of taking
+    # a pause.
+    if is_pause():
+        time.sleep(pause_time())
+```
+
 ## References
 
 [1] A. M. Feit, D. Weir, and A. Oulasvirta, “How We Type: Movement Strategies and Performance in Everyday Typing,” in Proceedings of the 2016 CHI Conference on Human Factors in Computing Systems, San Jose California USA, May 2016, pp. 4262–4273. doi: 10.1145/2858036.2858233.
