@@ -22,6 +22,26 @@ runner tests/examples/test_conf.yaml
 
 from the root of this repo.
 
+### Docker usage
+
+If you installed this program with Docker, you will need to pass your script to
+the container. To do so, you can use the `--volume` flag to bind mount your
+current directory to a location inside the container.
+
+First, navigate to a directory that has your script in one of it's child
+directories. Then, run
+
+```shell
+docker run --volume $PWD:/data [image-name] [path/to/script]
+```
+
+where:
+
+* `[image-name]` needs to be replaced by the name of your docker image.
+
+* `[path/to/script]` is the path towards your script from your current
+  working directory.
+
 ## Installing
 
 `runner` can be installed using `pip`. This means that you need a working installation of Python and Pip. See: [https://pip.pypa.io/en/stable/installing/](https://pip.pypa.io/en/stable/installing/).
