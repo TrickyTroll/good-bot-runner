@@ -39,33 +39,6 @@ class Commands:
         # `dir_name` should be set dynamically.
         self.dir_name = "commands"
 
-    def fake_start(self, text: str) -> None:
-        """To print the first command before creating a child process.
-
-        Args:
-            text (str): The command that will be used to spawn a child
-            process with pexpect.
-
-        Returns:
-            None: None
-        """
-
-        letters = list(text)
-        for letter in letters[0:-1]:
-            print(letter, end="", flush=True)
-            time.sleep(0.11)  # TODO: This should be randomized.
-        print(letters[-1])
-
-        return None
-
-    def get_directory(self) -> str:
-        """Returns the dir_name attr.
-
-        Returns:
-            str: The dir_name.
-        """
-        return self.dir_name
-
     def fake_typing(self, child: pexpect.pty_spawn.spawn, text: str) -> None:
         """Fake typing of commands
 
