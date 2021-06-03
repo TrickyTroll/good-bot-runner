@@ -21,12 +21,12 @@ on the command line, `runner` randomly introduces typos and delays.
 The chances of making typos and the time between keystrokes is
 based on different [papers](#references) on the subject.
 
-The `type_sentence()` function uses every other functions in the
-file to type a sentence in the most natural way possible. It splits
-the sentence and sends each keypress to the `type_letters()` function.
+The `type_sentence()` uses `type_letters()` to type a sentence in 
+the most natural way possible. It splits the sentence and sends 
+each keypress to the `type_letters()` function.
 
 `type_letters()` takes care of introducing the required typos and
-delays.
+delays. It uses every other functions in the module.
 
 ![Functions sequence diagram](../samples/img/sequence-diagram.png)
 
