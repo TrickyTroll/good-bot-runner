@@ -1,7 +1,7 @@
-# Developper `README`
+# Developer `README`
 
 This `README` contains useful information if you want to work
-on `runner`. For more general documenation, see the project's
+on `runner`. For more general documentation, see the project's
 [main](../README.md) `README`.
 
 ## Dependencies
@@ -11,10 +11,10 @@ manager was used. To install Poetry, see their
 [installation](https://python-poetry.org/docs/#installation) instructions.
 
 When running `pip install .` in this project's root
-directory, every dependency mentionned in the `pyproject.toml` file
+directory, every dependency mentioned in the `pyproject.toml` file
 will be installed. **This does not include development dependencies.**
 
-To install de latter, you will need to run the following command:
+To install the latter, you will need to run the following command:
 
 ```shell
 poetry install .
@@ -45,7 +45,7 @@ be written using `pytest`.
 
 `pytest` will run every function with a name that starts with
 `test_`. It is important to name your tests properly or else
-they wont be executed.
+they won’t be executed.
 
 ## Typing
 
@@ -70,9 +70,9 @@ from the programs root directory.
 class. This class is used to create `Commands` object that can
 run commands on a `bash` prompt.
 
-While the human-like typing is done in the
-[`human_typing`](#human_typingpy) module, process spawing and
-interaction is done in this module.
+While the humanlike typing is done in the
+[`human_typing`](#human_typingpy) module, process spawning and
+interaction are done in this module.
 
 **This is where to start if you want to change the way `runner`**
 **spawns processes and interacts with them.**
@@ -87,7 +87,7 @@ The `classmodule` also takes care of the **password handling**.
 Functions that retrieve passwords from environment variables are
 defined in the `Commands` object.
 
-#### `Commands` objects methods
+#### `Commands` object methods
 
 * `fake_typing()`: Uses the `type_sentence` method from `human_typing` to
   "type" a string of text to a child process.
@@ -96,7 +96,7 @@ defined in the `Commands` object.
   are not recorded.
 * `is_password()`: Checks if the next thing to send to the process is a
   password.
-* `get_secret()`: Gets a password from an environment variable mentionned
+* `get_secret()`: Gets a password from an environment variable mentioned
   in the user's configuration file.
 * `run()`: Uses every other methods to start the `bash` process and
   interact with it until every command defined by the used has been
@@ -105,7 +105,7 @@ defined in the `Commands` object.
 ### `funcmodule.py`
 
 The [funcmodule](funcmodule.py) contains every function used by
-the command line interface to parse instrution files.
+the command line interface to parse instruction files.
 
 It is the file to modify if you want to improve the parser or
 interact with the user before anything else runs.
@@ -132,7 +132,7 @@ delays. It uses every other functions in the module.
 
 #### Typos
 
-Functions used to generate typose are:
+Functions used to generate typos are
 
 * `is_typo()`: Determine whether or not there will be a typo based
   on percentage chances.
@@ -163,7 +163,7 @@ Functions used to compute delays are the following:
 Typing speed is determined by how much time is spent between
 each character typed. The delay is longer when we have to press
 two consecutive keys using the same finger [1]. Studies have also
-found which key combination are most likely to be typed by one or
+found which key combination is most likely to be typed by one or
 two hands [3].
 
 Using this information, a delay is computed before each keypress
@@ -171,7 +171,7 @@ by the `get_delay()` function.
 
 ##### Delays between words
 
-People sometimes take pauses while typing. To mimic this comportement,
+People sometimes take pauses while typing. To mimic this behaviour,
 `runner` has a 20 to 30% chances of taking a .5 to 1 second pauses
 between words.
 
