@@ -40,6 +40,9 @@ using Github actions.
 are not familiar with `unittest`, please refer to the
 [documentation](https://docs.python.org/3/library/unittest.html).
 
+Feel free to use `pytest` if you prefer. Future tests will probably
+be written using `pytest`.
+
 `pytest` will run every function with a name that starts with
 `test_`. It is important to name your tests properly or else
 they wont be executed.
