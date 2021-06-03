@@ -88,7 +88,7 @@ def parse_config(conf_path: pathlib.Path) -> dict:
         should be `lists` of shell commands or stuff to
         expect before running those shell commands.
     """
-    with open(conf_path, 'r') as stream:
+    with open(conf_path, "r") as stream:
         conf = stream.read()
 
     parsed = yaml.safe_load(conf)

@@ -18,6 +18,7 @@ import pathlib
 from runner import classmodule
 from runner import funcmodule
 
+
 def in_docker() -> bool:
     """Checks if code is currently running in a Docker container.
     Checks if Docker is in control groups or if there is a `.dockerenv`
@@ -32,10 +33,12 @@ def in_docker() -> bool:
         and any("docker" in line for line in open(path))
     )
 
+
 if in_docker():
     DATA_DIR = pathlib.Path("/data")
 else:
     DATA_DIR = pathlib.Path(".")
+
 
 @click.command()
 @click.argument("input", type=str)
