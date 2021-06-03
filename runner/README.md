@@ -21,6 +21,15 @@ on the command line, `runner` randomly introduces typos and delays.
 The chances of making typos and the time between keystrokes is
 based on different [papers](#references) on the subject.
 
+The `type_sentence()` function uses every other functions in the
+file to type a sentence in the most natural way possible. It splits
+the sentence and sends each keypress to the `type_letters()` function.
+
+`type_letters()` takes care of introducing the required typos and
+delays.
+
+![Functions sequence diagram](../samples/img/sequence-diagram.png)
+
 #### Typos
 
 Functions used to generate typose are:
@@ -41,7 +50,24 @@ variable.
 `runner` uses two different types of delays. There are delays
 between *each* characters and delays between *some* words.
 
+Functions used to compute delays are the following:
+
+* `is_pause()`: To determine if there should be a pause between
+  two words.
+* `pause_time()`: Returns how long the pause between two words
+  shoud be.
+* `get_delay()`: Returns the delay between two keypresses.
+
 ##### Delays between characters
+
+Typing speed is determined by how much time is spent between
+each character typed. The delay is longer when we have to press
+two consecutive keys using the same finger [1]. Studies have also
+found which key combination are most likely to be typed by one or
+two hands [3].
+
+Using this information, a delay is computed before each keypress
+by the `get_delay()` function.
 
 ##### Delays between words
 
