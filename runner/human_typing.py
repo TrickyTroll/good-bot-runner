@@ -135,8 +135,8 @@ def pause_time() -> float:
     Returns:
         float: How long the pause shoud last **in seconds**.
     """
-    # Between .05 to .5 seconds
-    pause_ms: int = random.randint(50, 500)
+    # Between .5 to 1 seconds
+    pause_ms: int = random.randint(500, 1000)
     return pause_ms / 1000  # returned pause is in seconds.
 
 
