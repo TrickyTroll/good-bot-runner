@@ -110,6 +110,19 @@ def is_typo() -> bool:
     # Randint includes the upper bound.
     return random.randint(1, 100) <= error_percent
 
+def is_pause() -> bool:
+    """Checks if the computer should pause typing for a while.
+
+    Similar to `is_typo()`, but is not based on any research.
+    The chances of taking a small pause has been determined
+    by testing different combinations of `is_pause()` and
+    `pause_time()`.
+
+    Returns:
+        bool: Whether or not the program should stop typing.
+    """
+    pause_percent = random.randint(20,30)
+    return random.randint(1, 100) <= pause_percent
 
 def pick_typo(next_letter: str) -> Union[str, None]:
     """Picks a typo according to the next letter to type.
