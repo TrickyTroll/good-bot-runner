@@ -233,6 +233,10 @@ def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> No
     If there is a typo, `type_typo()` is called and sends the wrong letter
     to the process before correcting it.
 
+    If the next character to type is a space, there are chances that the
+    program will take a pause. Indeed, people are more likely to hesitate
+    between words than while typing a word.
+
     Args:
         child (pexpect.pty_spawn.spawn): The child process to which the next
             letter will be sent.
@@ -241,7 +245,13 @@ def type_letters(child: pexpect.pty_spawn.spawn, previous: str, next: str) -> No
     """
     delay: float = get_delay(previous, next)
     typo: Union[str, None] = pick_typo(next)
-    time.sleep(delay)
+    if next == " ":
+        # If the next char to type is a space, compute chances of taking
+        # a pause.
+        if is_pause():
+            time.sleep(pause_time())
+    else:
+        time.sleep(delay)
     if typo:
         type_typo(child, next, typo)
     else:
