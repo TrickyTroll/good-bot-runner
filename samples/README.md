@@ -8,6 +8,8 @@ used to lean possible ways `runner` can be used.
 [This](./basic/test_conf.yaml) sample show how to tell the program to type basic
 shell commands and expect the prompt.
 
+![A small example of what runner can do](./img/basic_demo.gif)
+
 ## With passwords
 
 [With passwords](with_passwords/passwords.yaml) shows how to configure
