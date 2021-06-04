@@ -4,7 +4,7 @@ from runner import human_typing
 
 def test_pause_time():
     """Making sure that pause time is as long as documented.
-    
+
     Since the value `pause_ms` is chosen at random, this test
     won't catch everything.
 
@@ -12,6 +12,7 @@ def test_pause_time():
     assert (
         0.5 <= human_typing.pause_time() <= 1
     ), "If you have updated the `pause_ms` variable, please make sure that you have also updated the documentation. Then, you can also update this test."
+
 
 @given(st.characters())
 def test_pick_typo(character):
@@ -30,6 +31,7 @@ def test_pick_typo(character):
         else:
             assert typo == None
 
+
 @given(st.characters(), st.characters())
 def test_get_delay(previous, to_send):
     """Testing that delays are properly implemented.
@@ -46,4 +48,4 @@ def test_get_delay(previous, to_send):
     """
     delay = human_typing.get_delay(previous, to_send)
     assert delay > 0
-    assert .06 <= delay <= .170 # Since delay is in seconds.
+    assert 0.06 <= delay <= 0.170  # Since delay is in seconds.
