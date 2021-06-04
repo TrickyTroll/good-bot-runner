@@ -106,9 +106,10 @@ def is_typo() -> bool:
         bool: Whether or not there will be a typo.
 
     """
-    error_percent = random.randint(1, 4) #3.2 rounded up
+    error_percent = random.randint(1, 4)  # 3.2 rounded up
     # Randint includes the upper bound.
     return random.randint(1, 100) <= error_percent
+
 
 def is_pause() -> bool:
     """Checks if the computer should pause typing for a while.
@@ -121,8 +122,9 @@ def is_pause() -> bool:
     Returns:
         bool: Whether or not the program should stop typing.
     """
-    pause_percent: int = random.randint(20,30)
+    pause_percent: int = random.randint(20, 30)
     return random.randint(1, 100) <= pause_percent
+
 
 def pause_time() -> float:
     """Returns for how long the program should pause when typing.
@@ -133,9 +135,10 @@ def pause_time() -> float:
     Returns:
         float: How long the pause shoud last **in seconds**.
     """
-    # Between .05 to .5 seconds
-    pause_ms: int = random.randint(50, 500)
-    return pause_ms / 1000 # returned pause is in seconds.
+    # Between .5 to 1 seconds
+    pause_ms: int = random.randint(500, 1000)
+    return pause_ms / 1000  # returned pause is in seconds.
+
 
 def pick_typo(next_letter: str) -> Union[str, None]:
     """Picks a typo according to the next letter to type.

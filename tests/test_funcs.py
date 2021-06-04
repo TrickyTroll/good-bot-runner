@@ -5,14 +5,24 @@ from pathlib import Path
 
 CONFIGPATH = Path("./tests/examples")
 
+
 class TestConfigTest(unittest.TestCase):
     """Testing that the config checker raises the right errors."""
+
     def test_raises_too_many_keys(self):
-        pass
+        too_many_keys = {
+            "commands": ["ls", "echo 'foobar'"],
+            "expect": ["prompt", "prompt"],
+            "read": ["hello", "bye"],
+        }
+        with self.assertRaises(KeyError):
+            funcmodule.check_config(too_many_keys)
+
     def test_raises_bad_key(self):
-        pass
-    def wrong_item_type(self):
-        pass
+        bad_key = {"commands": ["ls", "echo 'foobar'"], "read": ["hello", "bye"]}
+        with self.assertRaises(KeyError):
+            funcmodule.check_config(bad_key)
+
 
 class TestParsing(unittest.TestCase):
     def test_returns_dict(self):

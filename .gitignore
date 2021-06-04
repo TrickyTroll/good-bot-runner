@@ -159,3 +159,8 @@ toto
 
 # Pycharm
 .idea
+
+# Sourcetrail
+Runner.srctrldb
+Runner.srctrlprj
+Runner.srctrlbm
