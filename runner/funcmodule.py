@@ -21,6 +21,34 @@ import pathlib
 import sys
 import yaml
 
+def parse_config(conf_path: pathlib.Path) -> dict:
+    """Parses a config file to generate a dict.
+
+    Should only be used on the files that contain a command.
+    Not to be used on the main conf file.
+
+    Args:
+        conf_path (pathlib.Path): The path to the user's
+        configuration file.
+
+    Returns:
+        dict: A dict that contains info on the command. The
+        keys will either be `commands` or `expect`. Values
+        should be `lists` of shell commands or stuff to
+        expect before running those shell commands.
+    """
+    with open(conf_path, "r") as stream:
+        conf = stream.read()
+
+    parsed = yaml.safe_load(conf)
+
+    if type(parsed) != dict:
+        print("Wrong type of config file.")
+        sys.exit()
+
+    check_config(parsed)
+
+    return parsed
 
 def check_config(conf: dict) -> None:
     """Checks the parsed configuration file for wrong types and arguments.
@@ -71,36 +99,22 @@ def check_config(conf: dict) -> None:
                     print("Quitting...")
                     sys.exit()
 
-
-def parse_config(conf_path: pathlib.Path) -> dict:
-    """Parses a config file to generate a dict.
-
-    Should only be used on the files that contain a command.
-    Not to be used on the main conf file.
-
-    Args:
-        conf_path (pathlib.Path): The path to the user's
-        configuration file.
-
-    Returns:
-        dict: A dict that contains info on the command. The
-        keys will either be `commands` or `expect`. Values
-        should be `lists` of shell commands or stuff to
-        expect before running those shell commands.
+def check_parsed_config_no_interaction(conf_path: Path) -> None:
     """
-    with open(conf_path, "r") as stream:
-        conf = stream.read()
+    check_parsed_config_no_interaction makes sure that a configuration file
+    is valid.
+    """
+    parsed_config = parse_congfig(conf_path)
 
-    parsed = yaml.safe_load(conf)
-
-    if type(parsed) != dict:
-        print("Wrong type of config file.")
-        sys.exit()
-
-    check_config(parsed)
-
-    return parsed
-
+    if len(conf.keys()) > 2:
+        raise KeyError(
+            f"Your configuration file must only have 2 keys, not {len(conf.keys())}"
+        )
+    for key, value in conf.items():
+        if key not in ("commands", "expect"):
+            raise KeyError(
+                "Every key in your configuration file must be either 'commands' or 'expect'."
+            )
 
 #######################################################################
 #                             Debugging                               #
