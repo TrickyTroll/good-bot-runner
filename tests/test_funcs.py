@@ -5,7 +5,6 @@ from pathlib import Path
 
 CONFIGPATH = Path("./tests/examples")
 
-
 class TestConfigTest(unittest.TestCase):
     """Testing that the config checker raises the right errors."""
 
@@ -42,6 +41,16 @@ class TestParsing(unittest.TestCase):
             self.assertEqual(type(values), type([]))
             self.assertEqual(type(keys), type(""))
 
+class TestNoInteractionChecker(unittest.TestCase):
+    """Test for the check_parsed_config_no_interaction function."""
+    def test_raises_wrong_type(self):
+        """
+        Passes a file that is seen as a list once unmarshalled.
+        This test makes sure that the function will raise an error.
+        See ``good-bot-runner/tests/examples/bad_conf_type.yaml``.
+        """
+        with self.assertRaises(TypeError):
+            funcmodule.check_parsed_config_no_interaction(CONFIGPATH/ "bad_conf_type.yaml")
 
 if __name__ == "__main__":
     unittest.main()
