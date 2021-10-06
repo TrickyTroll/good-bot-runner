@@ -102,9 +102,24 @@ def check_config(conf: dict) -> None:
 def check_parsed_config_no_interaction(conf_path: Path) -> None:
     """
     check_parsed_config_no_interaction makes sure that a configuration file
-    is valid.
+    is valid. The configuration file is parsed using ``parse_config()```.
+
+    Once the configuration file is unmarshalled, the result is checked for:
+
+    - type is dict.
+    - No more than two keys.
+    - Keys are `commands` or `expect`.
+
+    Parameters
+    ----------
+    conf_path: pathlib.Path
+        The path towards the configuration file to check. Can be relative
+        or absolute.
     """
-    parsed_config = parse_congfig(conf_path)
+    conf = parse_congfig(conf_path)
+
+    if not isinstance(conf, dict):
+        raise TypeError(f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}")
 
     if len(conf.keys()) > 2:
         raise KeyError(
