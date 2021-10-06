@@ -61,6 +61,9 @@ def check_config(conf: dict) -> None:
         KeyError: If a key is named differently than `commands` or `expect`.
     """
 
+    if not isinstance(conf, dict):
+        raise TypeError(f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}")
+
     if len(conf.keys()) > 2:
         raise KeyError(
             f"Your configuration file must only have 2 keys, not {len(conf.keys())}"
