@@ -42,12 +42,6 @@ def parse_config(conf_path: pathlib.Path) -> dict:
 
     parsed = yaml.safe_load(conf)
 
-    if type(parsed) != dict:
-        print("Wrong type of config file.")
-        sys.exit()
-
-    check_config(parsed)
-
     return parsed
 
 def check_config(conf: dict) -> None:
@@ -99,7 +93,7 @@ def check_config(conf: dict) -> None:
                     print("Quitting...")
                     sys.exit()
 
-def check_parsed_config_no_interaction(conf_path: Path) -> None:
+def check_parsed_config_no_interaction(conf_path: pathlib.Path) -> None:
     """
     check_parsed_config_no_interaction makes sure that a configuration file
     is valid. The configuration file is parsed using ``parse_config()```.
@@ -116,7 +110,7 @@ def check_parsed_config_no_interaction(conf_path: Path) -> None:
         The path towards the configuration file to check. Can be relative
         or absolute.
     """
-    conf = parse_congfig(conf_path)
+    conf = parse_config(conf_path)
 
     if not isinstance(conf, dict):
         raise TypeError(f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}")
