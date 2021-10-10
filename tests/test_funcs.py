@@ -51,6 +51,23 @@ class TestNoInteractionChecker(unittest.TestCase):
         """
         with self.assertRaises(TypeError):
             funcmodule.check_parsed_config_no_interaction(CONFIGPATH/ "bad_conf_type.yaml")
+    def test_raises_too_many_keys(self):
+        """
+        This test makes sure that the function will raise an error
+        when an unmarshalled configuration file contains too many
+        keys.
+        See ``good-bot-runner/tests/examples/bad_conf_keys.yaml``.
+        """
+        with self.assertRaises(KeyError):
+            funcmodule.check_parsed_config_no_interaction(CONFIGPATH / "bad_conf_keys.yaml")
+    def test_raises_bad_key_name(self):
+        """
+        Keys in a ``runner`` file can only be named ``commands``
+        or ``expect``. If not, the checker should raise an error.
+        See ``good-bot-runner/tests/examples/bad_conf_key_names.yaml``.
+        """
+        with self.assertRaises(KeyError):
+            funcmodule.check_parsed_config_no_interaction(CONFIGPATH / "bad_conf_key_names.yaml")
 
 if __name__ == "__main__":
     unittest.main()
