@@ -1,0 +1,6 @@
+command: # Should be commands
+  - echo 'hello world'
+  - ls
+expects: # Should be expect
+  - prompt
+  - prompt
