@@ -66,11 +66,13 @@ def gb_run(input: str) -> None:
 
     return None
 
+
 @click.command()
 @click.argument("input", type=str)
 def check_config(input: str) -> None:
     """Checks you configuration file to make sure that there are no errors."""
     funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input))
+
 
 def main():
     gb_run()

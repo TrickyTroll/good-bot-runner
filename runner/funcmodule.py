@@ -21,6 +21,7 @@ import pathlib
 import sys
 import yaml
 
+
 def parse_config(conf_path: pathlib.Path) -> dict:
     """Parses a config file to generate a dict.
 
@@ -44,6 +45,7 @@ def parse_config(conf_path: pathlib.Path) -> dict:
 
     return parsed
 
+
 def check_config(conf: dict) -> None:
     """Checks the parsed configuration file for wrong types and arguments.
 
@@ -62,7 +64,9 @@ def check_config(conf: dict) -> None:
     """
 
     if not isinstance(conf, dict):
-        raise TypeError(f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}")
+        raise TypeError(
+            f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}"
+        )
 
     if len(conf.keys()) > 2:
         raise KeyError(
@@ -96,6 +100,7 @@ def check_config(conf: dict) -> None:
                     print("Quitting...")
                     sys.exit()
 
+
 def check_parsed_config_no_interaction(conf_path: pathlib.Path) -> None:
     """
     check_parsed_config_no_interaction makes sure that a configuration file
@@ -116,7 +121,9 @@ def check_parsed_config_no_interaction(conf_path: pathlib.Path) -> None:
     conf = parse_config(conf_path)
 
     if not isinstance(conf, dict):
-        raise TypeError(f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}")
+        raise TypeError(
+            f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}"
+        )
 
     if len(conf.keys()) > 2:
         raise KeyError(
@@ -127,6 +134,7 @@ def check_parsed_config_no_interaction(conf_path: pathlib.Path) -> None:
             raise KeyError(
                 "Every key in your configuration file must be either 'commands' or 'expect'."
             )
+
 
 #######################################################################
 #                             Debugging                               #
