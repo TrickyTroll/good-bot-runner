@@ -1,0 +1,7 @@
+commands:
+  - echo 'hello world'
+  - ls
+expect:
+  - prompt
+  - prompt
+read: "Hello, world"

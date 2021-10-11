@@ -49,6 +49,9 @@ def gb_run(input: str) -> None:
     """
     parsed = funcmodule.parse_config(DATA_DIR / pathlib.Path(input))
 
+    # parse_config does not assume anything about the config file.
+    funcmodule.check_config(parsed)
+
     try:
         commands = parsed["commands"]
         expect = parsed["expect"]
@@ -62,6 +65,13 @@ def gb_run(input: str) -> None:
     command.run()
 
     return None
+
+
+@click.command()
+@click.argument("input", type=str)
+def check_config(input: str) -> None:
+    """Checks you configuration file to make sure that there are no errors."""
+    funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input))
 
 
 def main():

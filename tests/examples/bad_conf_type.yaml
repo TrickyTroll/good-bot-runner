@@ -1,0 +1,2 @@
+- commands: ["echo 'hello world'", "ls -a"]
+- expect: ["prompt", "prompt"]

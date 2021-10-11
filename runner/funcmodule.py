@@ -22,6 +22,30 @@ import sys
 import yaml
 
 
+def parse_config(conf_path: pathlib.Path) -> dict:
+    """Parses a config file to generate a dict.
+
+    Should only be used on the files that contain a command.
+    Not to be used on the main conf file.
+
+    Args:
+        conf_path (pathlib.Path): The path to the user's
+        configuration file.
+
+    Returns:
+        dict: A dict that contains info on the command. The
+        keys will either be `commands` or `expect`. Values
+        should be `lists` of shell commands or stuff to
+        expect before running those shell commands.
+    """
+    with open(conf_path, "r") as stream:
+        conf = stream.read()
+
+    parsed = yaml.safe_load(conf)
+
+    return parsed
+
+
 def check_config(conf: dict) -> None:
     """Checks the parsed configuration file for wrong types and arguments.
 
@@ -38,6 +62,11 @@ def check_config(conf: dict) -> None:
         KeyError: If the configuration file has too many keys (more than 2).
         KeyError: If a key is named differently than `commands` or `expect`.
     """
+
+    if not isinstance(conf, dict):
+        raise TypeError(
+            f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}"
+        )
 
     if len(conf.keys()) > 2:
         raise KeyError(
@@ -72,34 +101,39 @@ def check_config(conf: dict) -> None:
                     sys.exit()
 
 
-def parse_config(conf_path: pathlib.Path) -> dict:
-    """Parses a config file to generate a dict.
-
-    Should only be used on the files that contain a command.
-    Not to be used on the main conf file.
-
-    Args:
-        conf_path (pathlib.Path): The path to the user's
-        configuration file.
-
-    Returns:
-        dict: A dict that contains info on the command. The
-        keys will either be `commands` or `expect`. Values
-        should be `lists` of shell commands or stuff to
-        expect before running those shell commands.
+def check_parsed_config_no_interaction(conf_path: pathlib.Path) -> None:
     """
-    with open(conf_path, "r") as stream:
-        conf = stream.read()
+    check_parsed_config_no_interaction makes sure that a configuration file
+    is valid. The configuration file is parsed using ``parse_config()```.
 
-    parsed = yaml.safe_load(conf)
+    Once the configuration file is unmarshalled, the result is checked for:
 
-    if type(parsed) != dict:
-        print("Wrong type of config file.")
-        sys.exit()
+    - type is dict.
+    - No more than two keys.
+    - Keys are `commands` or `expect`.
 
-    check_config(parsed)
+    Parameters
+    ----------
+    conf_path: pathlib.Path
+        The path towards the configuration file to check. Can be relative
+        or absolute.
+    """
+    conf = parse_config(conf_path)
 
-    return parsed
+    if not isinstance(conf, dict):
+        raise TypeError(
+            f"The configuration file must be seen as a dictionary. Currently seen as {type(conf)}"
+        )
+
+    if len(conf.keys()) > 2:
+        raise KeyError(
+            f"Your configuration file must only have 2 keys, not {len(conf.keys())}"
+        )
+    for key, value in conf.items():
+        if key not in ("commands", "expect"):
+            raise KeyError(
+                "Every key in your configuration file must be either 'commands' or 'expect'."
+            )
 
 
 #######################################################################

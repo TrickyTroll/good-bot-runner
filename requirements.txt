@@ -1,5 +1,14 @@
+attrs==21.2.0
 click==7.1.2
-pexpect==4.8.0
-ptyprocess==0.7.0
-PyYAML==5.4.1
 hypothesis==6.13.12
+iniconfig==1.1.1
+packaging==21.0
+pexpect==4.8.0
+pluggy==1.0.0
+ptyprocess==0.7.0
+py==1.10.0
+pyparsing==2.4.7
+pytest==6.2.5
+PyYAML==5.4.1
+sortedcontainers==2.4.0
+toml==0.10.2
