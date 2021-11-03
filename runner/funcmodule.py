@@ -30,13 +30,13 @@ def config_not_found_routine(config_file_path: pathlib.Path, DATA_DIR: pathlib.P
     This function suggests flags that could be used to solve the problem, and
     then exits the program.
     """
-    click.echo(f"Could not find {config_file_path}.")
+    click.echo(f"Could not find '{config_file_path}'.")
     if DATA_DIR == pathlib.Path("."):
-        click.echo("runner assumes that you are using Good-Bot in a container.\
-        \nMaybe try the --no-docker flag.")
-    elif DATA_DIR == pathlib.Path("/project"):
         click.echo("runner assumes that you are using Good-Bot outside of a container.\
         \nMaybe try the --docker flag.")
+    elif DATA_DIR == pathlib.Path("/data/"):
+        click.echo("runner assumes that you are using Good-Bot in a container.\
+        \nMaybe try the --no-docker flag.")
 
     sys.exit(1)
 
