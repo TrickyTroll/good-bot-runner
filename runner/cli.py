@@ -20,8 +20,18 @@ from runner import funcmodule
 
 @click.command()
 @click.argument("input_file", type=str)
-@click.option("--docker",type=bool, default=False, help="Override the automatic environment selection.")
-@click.option("--no-docker",type=bool, default=False, help="Override the automatic environment selection.")
+@click.option(
+    "--docker",
+    type=bool,
+    default=False,
+    help="Override the automatic environment selection.",
+)
+@click.option(
+    "--no-docker",
+    type=bool,
+    default=False,
+    help="Override the automatic environment selection.",
+)
 def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
     """Runs a command using the Commands class.
     It runs the command according to the configuration file that is
@@ -68,9 +78,13 @@ def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
 def check_config(input_file: str) -> None:
     """Checks you configuration file to make sure that there are no errors."""
     try:
-        funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input_file))
+        funcmodule.check_parsed_config_no_interaction(
+            DATA_DIR / pathlib.Path(input_file)
+        )
     except FileNotFoundError:
-        funcmodule.config_not_found_routine(DATA_DIR / pathlib.Path(input_file), DATA_DIR)
+        funcmodule.config_not_found_routine(
+            DATA_DIR / pathlib.Path(input_file), DATA_DIR
+        )
 
 
 def main():
