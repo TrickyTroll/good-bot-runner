@@ -11,27 +11,11 @@ See click's
 for more information on how decorators affect the ``gb_run()`` function.
 """
 
-import os
 import sys
 import click
 import pathlib
 from runner import classmodule
 from runner import funcmodule
-
-
-def in_docker() -> bool:
-    """Checks if code is currently running in a Docker container.
-    Checks if Docker is in control groups or if there is a `.dockerenv`
-    file at the filesystem's root directory.
-    Returns:
-        bool: Whether or not the code is running in a Docker container.
-    """
-    path = "/proc/self/cgroup"
-    return (
-        os.path.exists("/.dockerenv")
-        or os.path.isfile(path)
-        and any("docker" in line for line in open(path))
-    )
 
 
 @click.command()
@@ -45,7 +29,7 @@ def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
     """
     global DATA_DIR
 
-    if in_docker():
+    if funcmodule.in_docker():
         DATA_DIR = pathlib.Path("/data")
     else:
         DATA_DIR = pathlib.Path(".")
