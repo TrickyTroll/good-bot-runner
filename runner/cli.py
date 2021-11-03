@@ -35,10 +35,10 @@ def in_docker() -> bool:
 
 
 @click.command()
-@click.argument("input", type=str)
+@click.argument("input_file", type=str)
 @click.option("--docker",type=bool, default=False, help="Override the automatic environment selection.")
 @click.option("--no-docker",type=bool, default=False, help="Override the automatic environment selection.")
-def gb_run(input: str, docker: bool, no_docker: bool) -> None:
+def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
     """Runs a command using the Commands class.
     It runs the command according to the configuration file that is
     passed as the 'input' argument
@@ -56,7 +56,7 @@ def gb_run(input: str, docker: bool, no_docker: bool) -> None:
     elif no_docker:
         DATA_DIR = pathlib.Path(".")
 
-    config_file_path: pathlib.Path = DATA_DIR / pathlib.Path(input)
+    config_file_path: pathlib.Path = DATA_DIR / pathlib.Path(input_file)
     try:
         parsed = funcmodule.parse_config(config_file_path)
     except FileNotFoundError:
