@@ -80,13 +80,13 @@ def gb_run(input: str, docker: bool, no_docker: bool) -> None:
 
 
 @click.command()
-@click.argument("input", type=str)
-def check_config(input: str) -> None:
+@click.argument("input-file", type=str)
+def check_config(input_file: str) -> None:
     """Checks you configuration file to make sure that there are no errors."""
     try:
-        funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input))
+        funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input_file))
     except FileNotFoundError:
-        funcmodule.config_not_found_routine(DATA_DIR / pathlib.Path(input), DATA_DIR)
+        funcmodule.config_not_found_routine(DATA_DIR / pathlib.Path(input_file), DATA_DIR)
 
 
 def main():
