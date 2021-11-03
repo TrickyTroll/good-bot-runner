@@ -34,19 +34,28 @@ def in_docker() -> bool:
     )
 
 
-if in_docker():
-    DATA_DIR = pathlib.Path("/data")
-else:
-    DATA_DIR = pathlib.Path(".")
-
-
 @click.command()
 @click.argument("input", type=str)
-def gb_run(input: str) -> None:
+@click.option("--docker", default=False, help="Override the automatic environment selection.")
+@click.option("--no-docker", default=False, help="Override the automatic environment selection.")
+def gb_run(input: str, docker: bool, no_docker: bool) -> None:
     """Runs a command using the Commands class.
     It runs the command according to the configuration file that is
     passed as the 'input' argument
     """
+    global DATA_DIR
+
+    if in_docker():
+        DATA_DIR = pathlib.Path("/data")
+    else:
+        DATA_DIR = pathlib.Path(".")
+
+    # Overriding the automatic selection if the flags are not set to default.
+    if docker:
+        PROJECT_ROOT = pathlib.Path("/project")
+    elif no_docker:
+        PROJECT_ROOT = pathlib.Path(".")
+
     parsed = funcmodule.parse_config(DATA_DIR / pathlib.Path(input))
 
     # parse_config does not assume anything about the config file.
