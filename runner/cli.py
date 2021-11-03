@@ -36,8 +36,8 @@ def in_docker() -> bool:
 
 @click.command()
 @click.argument("input", type=str)
-@click.option("--docker", default=False, help="Override the automatic environment selection.")
-@click.option("--no-docker", default=False, help="Override the automatic environment selection.")
+@click.option("--docker",type=bool, default=False, help="Override the automatic environment selection.")
+@click.option("--no-docker",type=bool, default=False, help="Override the automatic environment selection.")
 def gb_run(input: str, docker: bool, no_docker: bool) -> None:
     """Runs a command using the Commands class.
     It runs the command according to the configuration file that is
