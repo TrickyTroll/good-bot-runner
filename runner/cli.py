@@ -52,9 +52,9 @@ def gb_run(input: str, docker: bool, no_docker: bool) -> None:
 
     # Overriding the automatic selection if the flags are not set to default.
     if docker:
-        PROJECT_ROOT = pathlib.Path("/project")
+        DATA_DIR = pathlib.Path("/project")
     elif no_docker:
-        PROJECT_ROOT = pathlib.Path(".")
+        DATA_DIR = pathlib.Path(".")
 
     parsed = funcmodule.parse_config(DATA_DIR / pathlib.Path(input))
 
