@@ -56,8 +56,11 @@ def gb_run(input: str, docker: bool, no_docker: bool) -> None:
     elif no_docker:
         DATA_DIR = pathlib.Path(".")
 
-    parsed = funcmodule.parse_config(DATA_DIR / pathlib.Path(input))
-
+    config_file_path: pathlib.Path = DATA_DIR / pathlib.Path(input)
+    try:
+        parsed = funcmodule.parse_config(config_file_path)
+    except FileNotFoundError:
+        funcmodule.config_not_found_routine(config_file_path, DATA_DIR)
     # parse_config does not assume anything about the config file.
     funcmodule.check_config(parsed)
 
@@ -80,7 +83,10 @@ def gb_run(input: str, docker: bool, no_docker: bool) -> None:
 @click.argument("input", type=str)
 def check_config(input: str) -> None:
     """Checks you configuration file to make sure that there are no errors."""
-    funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input))
+    try:
+        funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input))
+    except FileNotFoundError:
+        funcmodule.config_not_found_routine(DATA_DIR / pathlib.Path(input), DATA_DIR)
 
 
 def main():
