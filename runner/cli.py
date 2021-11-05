@@ -72,7 +72,7 @@ def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
 
     command.run()
 
-    return None
+    print()
 
 
 @click.command()
