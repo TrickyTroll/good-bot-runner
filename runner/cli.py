@@ -24,12 +24,14 @@ from runner import funcmodule
     "--docker",
     type=bool,
     default=False,
+    is_flag=True,
     help="Override the automatic environment selection.",
 )
 @click.option(
     "--no-docker",
     type=bool,
     default=False,
+    is_flag=True,
     help="Override the automatic environment selection.",
 )
 def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
