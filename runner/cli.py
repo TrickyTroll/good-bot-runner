@@ -11,12 +11,13 @@ See click's
 for more information on how decorators affect the ``gb_run()`` function.
 """
 
-import sys
 import click
 import pathlib
+import sys
 from runner import classmodule
 from runner import funcmodule
 
+DATA_DIR: pathlib.Path = pathlib.Path(".")
 
 @click.command()
 @click.argument("input_file", type=str)
@@ -39,7 +40,6 @@ def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
     It runs the command according to the configuration file that is
     passed as the 'input' argument
     """
-    global DATA_DIR
 
     if funcmodule.in_docker():
         DATA_DIR = pathlib.Path("/data")
