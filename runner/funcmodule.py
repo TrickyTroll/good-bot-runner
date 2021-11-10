@@ -17,9 +17,51 @@ parsed = funcmodule.parse_config(conf)
 text file.
 """
 
+import click
 import pathlib
 import sys
+import os
 import yaml
+
+
+def in_docker() -> bool:
+    """Checks if code is currently running in a Docker container.
+    Checks if Docker is in control groups or if there is a `.dockerenv`
+    file at the filesystem's root directory.
+    Returns:
+        bool: Whether or not the code is running in a Docker container.
+    """
+    path = "/proc/self/cgroup"
+    return (
+        os.path.exists("/.dockerenv")
+        or os.path.isfile(path)
+        and any("docker" in line for line in open(path))
+    )
+
+
+def config_not_found_routine(
+    config_file_path: pathlib.Path, DATA_DIR: pathlib.Path
+) -> None:
+    """
+    config_not_found_routine is called whenever the user's configuration file
+    cannot be found.
+
+    This function suggests flags that could be used to solve the problem, and
+    then exits the program.
+    """
+    click.echo(f"Could not find '{config_file_path}'.")
+    if DATA_DIR == pathlib.Path("."):
+        click.echo(
+            "runner assumes that you are using Good-Bot outside of a container.\
+        \nMaybe try the --docker flag."
+        )
+    elif DATA_DIR == pathlib.Path("/data/"):
+        click.echo(
+            "runner assumes that you are using Good-Bot in a container.\
+        \nMaybe try the --no-docker flag."
+        )
+
+    sys.exit(1)
 
 
 def parse_config(conf_path: pathlib.Path) -> dict:

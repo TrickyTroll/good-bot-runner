@@ -45,7 +45,7 @@ where:
 ## Installing
 
 `runner` can be installed using `pip`. This means that you need a working installation of Python and Pip. See: [https://pip.pypa.io/en/stable/installing/](https://pip.pypa.io/en/stable/installing/).
-Since this program is _not_ distributed on [pypi](https://pypi.org), you will need to download a copy of this repo first. This can by downloading the `.zip` archive or by cloning this repo.
+Since this program is _not_ distributed on [pypi](https://pypi.org), you will need to download a copy of this repo first. This can be done by downloading the `.zip` archive or by cloning this repo.
 
 ### Docker install
 

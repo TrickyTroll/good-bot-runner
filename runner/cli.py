@@ -11,44 +11,52 @@ See click's
 for more information on how decorators affect the ``gb_run()`` function.
 """
 
-import os
-import sys
 import click
 import pathlib
+import sys
 from runner import classmodule
 from runner import funcmodule
 
-
-def in_docker() -> bool:
-    """Checks if code is currently running in a Docker container.
-    Checks if Docker is in control groups or if there is a `.dockerenv`
-    file at the filesystem's root directory.
-    Returns:
-        bool: Whether or not the code is running in a Docker container.
-    """
-    path = "/proc/self/cgroup"
-    return (
-        os.path.exists("/.dockerenv")
-        or os.path.isfile(path)
-        and any("docker" in line for line in open(path))
-    )
-
-
-if in_docker():
-    DATA_DIR = pathlib.Path("/data")
-else:
-    DATA_DIR = pathlib.Path(".")
-
+DATA_DIR: pathlib.Path = pathlib.Path(".")
 
 @click.command()
-@click.argument("input", type=str)
-def gb_run(input: str) -> None:
+@click.argument("input_file", type=str)
+@click.option(
+    "--docker",
+    type=bool,
+    default=False,
+    is_flag=True,
+    help="Override the automatic environment selection.",
+)
+@click.option(
+    "--no-docker",
+    type=bool,
+    default=False,
+    is_flag=True,
+    help="Override the automatic environment selection.",
+)
+def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
     """Runs a command using the Commands class.
     It runs the command according to the configuration file that is
     passed as the 'input' argument
     """
-    parsed = funcmodule.parse_config(DATA_DIR / pathlib.Path(input))
 
+    if funcmodule.in_docker():
+        DATA_DIR = pathlib.Path("/data")
+    else:
+        DATA_DIR = pathlib.Path(".")
+
+    # Overriding the automatic selection if the flags are not set to default.
+    if docker:
+        DATA_DIR = pathlib.Path("/project")
+    elif no_docker:
+        DATA_DIR = pathlib.Path(".")
+
+    config_file_path: pathlib.Path = DATA_DIR / pathlib.Path(input_file)
+    try:
+        parsed = funcmodule.parse_config(config_file_path)
+    except FileNotFoundError:
+        funcmodule.config_not_found_routine(config_file_path, DATA_DIR)
     # parse_config does not assume anything about the config file.
     funcmodule.check_config(parsed)
 
@@ -64,14 +72,21 @@ def gb_run(input: str) -> None:
 
     command.run()
 
-    return None
+    print()
 
 
 @click.command()
-@click.argument("input", type=str)
-def check_config(input: str) -> None:
+@click.argument("input-file", type=str)
+def check_config(input_file: str) -> None:
     """Checks you configuration file to make sure that there are no errors."""
-    funcmodule.check_parsed_config_no_interaction(DATA_DIR / pathlib.Path(input))
+    try:
+        funcmodule.check_parsed_config_no_interaction(
+            DATA_DIR / pathlib.Path(input_file)
+        )
+    except FileNotFoundError:
+        funcmodule.config_not_found_routine(
+            DATA_DIR / pathlib.Path(input_file), DATA_DIR
+        )
 
 
 def main():
