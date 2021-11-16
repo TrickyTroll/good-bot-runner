@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
-PyYAML = "^5.4.1"
+PyYAML = "^6.0"
 pexpect = "^4.8.0"
 click = "^7.1.2"
 
