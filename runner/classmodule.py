@@ -160,6 +160,13 @@ class Commands:
 
             if expect == "prompt":
                 child.expect("[#\$%]")
+            # wait for process to be over here
+            elif expect == "EOP":
+                pas
+                # Wait until end of process
+                # while !(process_over(command)):
+                #     pass
+                #     child.expect("[#\$%]")
             else:
                 child.expect(expect)
 
