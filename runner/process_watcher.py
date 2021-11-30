@@ -3,9 +3,10 @@
 """
 from subprocess import check_output
 from datetime import datetime
+from dateutil import parser
 from shlex import split
 from shutil import which
-from typing import List
+from typing import List, Tuple
 
 def get_executable(command: str) -> str:
     """
@@ -52,9 +53,25 @@ def get_pid(ps_output_line: str) -> int:
         return -1
 
 def get_start_time(ps_output_line: str) -> datetime:
-    time_as_string: str = ps_output_line.split()[1:]
+    """
+    Get the start time of a process from one of `ps`' output
+    lines.
 
-def get_pids_to_watch(executable_path: str) -> List[int]:
+    Args:
+        ps_output_line: A line returned by the command
+            `ps -eo pid,lstart,cmd`.
+
+    Returns: When the process described in `ps_output_line`
+        started.
+
+    """
+    # Sample output from ps -eo pid,lstart,cmd:
+    # 2954 Mon Nov 29 22:53:06 2021 vim
+    time_as_string: str = ps_output_line.split()[1:6]
+    time_as_datetime: datetime = parser.parse(time_as_string)
+    return time_as_datetime
+
+def get_pids_to_watch(executable_path: str) -> List[Tuple[int, datetime]]:
     """
     Find each process id's that should be watched to check if the process started by
     the provided executable path has completed it's execution.
@@ -65,17 +82,20 @@ def get_pids_to_watch(executable_path: str) -> List[int]:
         executable_path: The full path towards the executable to search process
             ids for.
 
-    Returns: A list of process ids related to the provided executable_path.
+    Returns: A list of process ids (index `0` of each tuple) related to the provided
+        executable_path and the time at which the process started (index `1`).
 
     """
-    process_ids_to_watch: List[int] = []
-    ps_output = check_output(["ps", "ax", executable_path])
+    process_ids_to_watch: List[Tuple[int, datetime]] = []
+    ps_output = check_output(["ps", "-eo", "pid,lstart,cmd", "|", "grep", executable_path])
     for output_line in ps_output[0: -1]:
         potential_pid = get_pid(output_line)
+        start_time = get_start_time(output_line)
         if potential_pid > 0:
-            process_ids_to_watch.append(potential_pid)
+            process_ids_to_watch.append((potential_pid, start_time))
 
     return process_ids_to_watch
 
 def get_matching_pid(process_ids: List[int], spawn_time: datetime):
-    for it
+    current_best_match = None
+    pass
