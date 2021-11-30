@@ -71,6 +71,7 @@ def get_start_time(ps_output_line: str) -> datetime:
     time_as_datetime: datetime = parser.parse(time_as_string)
     return time_as_datetime
 
+
 def get_pids_to_watch(executable_path: str) -> List[Tuple[int, datetime]]:
     """
     Find each process id's that should be watched to check if the process started by
@@ -96,6 +97,29 @@ def get_pids_to_watch(executable_path: str) -> List[Tuple[int, datetime]]:
 
     return process_ids_to_watch
 
-def get_matching_pid(process_ids: List[int], spawn_time: datetime):
-    current_best_match = None
-    pass
+
+def get_matching_pid(process_ids_start_time: List[Tuple[int, datetime]], command_typed_at: datetime) -> int:
+    """
+    Matches a process id from a process start time. The smaller the gap between
+    when the command was typed and the process' actual start time the better.
+
+    This function assumes that process_ids are a list of
+    Args:
+        process_ids_start_time: A list of process ids and their start tim.
+            This should be obtained using get_pids_to_watch().
+        command_typed_at: When the command that allegedly started the process
+            that we want was typed.
+
+    Returns: The process id of the best match.
+
+    """
+    current_best_match = process_ids_start_time[0]
+    to_beat: datetime = process_ids_start_time[0] - datetime
+    for process_id in process_ids_start_time[1:]:
+        current_time_diff: datetime = process_id[1] - datetime
+        if current_time_diff < to_beat:
+            current_best_match = process_ids_start_time
+            to_beat = current_time_diff
+    # Tuple that contains (pid, start time)
+    return current_best_match[0]
+
