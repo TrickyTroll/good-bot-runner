@@ -21,10 +21,13 @@ method should be used to spawn a new shell process and start
 todo.run()
 ```
 """
+
 import pexpect
 import sys
-import os
 import time
+import os
+from datetime import datetime
+import process_watcher
 from typing import Union, List, Dict
 
 from runner import human_typing
@@ -145,6 +148,8 @@ class Commands:
         child.logfile = sys.stdout
         child.expect("[#\$%]")
 
+        command_entered_time: Union[datetime, None] = None
+
         for index, command in enumerate(self.commands):
 
             expect = self.expect[index]
@@ -157,16 +162,18 @@ class Commands:
             else:
 
                 self.fake_typing(child, command)
+                command_entered_time = datetime.fromtimestamp(time.time())
 
             if expect == "prompt":
                 child.expect("[#\$%]")
             # wait for process to be over here
             elif expect == "EOP":
-                pas
-                # Wait until end of process
-                # while !(process_over(command)):
-                #     pass
-                #     child.expect("[#\$%]")
+                executable_command = process_watcher.get_executable(command)
+                pids_to_watch = process_watcher.get_pids_to_watch(executable_command)
+                best_match_with_entered_time = process_watcher.get_matching_pid(pids_to_watch, command_entered_time)
+                process_watcher.wait_for_process(best_match_with_entered_time)
+                # Expecting a prompt after the program is done running.
+                child.expect("[#\$%]")
             else:
                 child.expect(expect)
 
