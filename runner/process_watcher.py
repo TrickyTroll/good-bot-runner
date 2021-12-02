@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 """This module provides functions to check a process' status based on the command used to spawn said process.
 """
-from subprocess import check_output
+import os
 from datetime import datetime
-from dateutil import parser
 from shlex import split
 from shutil import which
+from subprocess import check_output
 from typing import List, Tuple
+
+from dateutil import parser
+
 
 def get_executable(command: str) -> str:
     """
@@ -123,3 +126,17 @@ def get_matching_pid(process_ids_start_time: List[Tuple[int, datetime]], command
     # Tuple that contains (pid, start time)
     return current_best_match[0]
 
+
+def wait_for_process(pid) -> None:
+    """
+    Wait for a process to be done running by process id.
+
+    Args:
+        pid: The process id of the process to watch.
+
+    """
+    while True:
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            break
