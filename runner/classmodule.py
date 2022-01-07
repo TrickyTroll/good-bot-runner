@@ -171,7 +171,18 @@ class Commands:
                 executable_command = process_watcher.get_executable(command)
                 pids_to_watch = process_watcher.get_pids_to_watch(executable_command)
                 best_match_with_entered_time = process_watcher.get_matching_pid(pids_to_watch, command_entered_time)
-                process_watcher.wait_for_process(best_match_with_entered_time)
+                # Fork here for waiting
+                try:
+                    pid = os.fork()
+                except OSError:
+                    print("Could not fork.")
+                    sys.exit()
+                
+                if pid == 0:
+                    process_watcher.wait_for_process(best_match_with_entered_time)
+
+                os.waitpid(pid, 0)
+
                 # Expecting a prompt after the program is done running.
                 child.expect("[#\$%]")
             else:
