@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Classes used by the `runner` program.
 
-This module contains the class used by `runner` create `Commands`
+This module contains the class used by `runner` to create `Commands`
 objects.
 
 ## Example:
@@ -166,18 +166,21 @@ class Commands:
                 child.expect("[#\$%]")
             # wait for process to be over here
             elif expect == "EOP":
-                executable_command = process_watcher.get_executable(command)
+                executable_command = process_watcher.get_command_name(command)
                 pid_to_watch = process_watcher.get_pid_to_watch(executable_command)
+                print(pid_to_watch)
                 # Fork here for waiting
-                try:
-                    pid = os.fork()
-                except OSError:
-                    print("Could not fork.")
-                    sys.exit()
-                
+                pid = os.fork()
                 if pid == 0:
-                    process_watcher.wait_for_process(pid_to_watch)
-                    os.waitpid(pid, 0)
+                    os.setsid()
+                    os.umask(0) 
+                    pid2 = os.fork() 
+                    if (pid2 == 0):
+                        process_watcher.wait_for_process(pid_to_watch)
+                    else:
+                        sys.exit()
+                else:
+                    sys.exit()
 
                 # Expecting a prompt after the program is done running.
                 child.expect("[#\$%]")

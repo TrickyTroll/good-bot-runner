@@ -194,4 +194,5 @@ def wait_for_process(pid) -> None:
         try:
             os.kill(pid, 0)
         except OSError:
+            # process is done
             break
