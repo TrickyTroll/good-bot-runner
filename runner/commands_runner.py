@@ -161,7 +161,6 @@ class Commands:
             else:
 
                 self.fake_typing(child, command)
-                command_entered_time = datetime.fromtimestamp(time.time())
 
             if expect == "prompt":
                 child.expect("[#\$%]")
@@ -178,8 +177,7 @@ class Commands:
                 
                 if pid == 0:
                     process_watcher.wait_for_process(pid_to_watch)
-
-                os.waitpid(pid, 0)
+                    os.waitpid(pid, 0)
 
                 # Expecting a prompt after the program is done running.
                 child.expect("[#\$%]")
