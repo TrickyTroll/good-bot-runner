@@ -10,6 +10,8 @@ from typing import List, Tuple
 
 from dateutil import parser
 
+from runner.commands_runner import Commands
+
 
 def get_executable(command: str) -> str:
     """
@@ -29,7 +31,7 @@ def get_executable(command: str) -> str:
         found in the provided command.
     """
     command_name: str = ""
-    for item in split(command_name):
+    for item in split(command):
         executable_path = which(item)
         if executable_path:
             command_name = executable_path
