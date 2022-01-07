@@ -14,7 +14,7 @@ for more information on how decorators affect the ``gb_run()`` function.
 import click
 import pathlib
 import sys
-from runner import classmodule
+from runner import commands_runner
 from runner import funcmodule
 
 DATA_DIR: pathlib.Path = pathlib.Path(".")
@@ -68,7 +68,7 @@ def gb_run(input_file: str, docker: bool, no_docker: bool) -> None:
         print("Missing element in the dictionary.")
         sys.exit()
 
-    command = classmodule.Commands(commands, expect)
+    command = commands_runner.Commands(commands, expect)
 
     command.run()
 
