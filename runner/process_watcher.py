@@ -36,8 +36,25 @@ def get_executable(command: str) -> str:
 
     return command_name
 
-def get_pid(ps_output_line: str) -> int:
+
+def get_pid_to_watch(process_name: str) -> int:
+    """Find the process id of the process spawned by `command_name`.
+
+    Uses `pgrep` to find the process id with the lowest time alive.
+
+    Args:
+        process_name (str): The name of the process to `pgrep` for.
+
+    Returns:
+        int: The process id of the most recent process with the provided
+             name
     """
+    return int(check_output(["pgrep", "--newest", process_name])[0])
+
+
+def get_pid(ps_output_line: str) -> int:
+    """ Deprecated
+
     Extracts a process id from one of `ps`' output lines.
 
     This function assumes that the pid is the first element on each
@@ -56,7 +73,8 @@ def get_pid(ps_output_line: str) -> int:
         return -1
 
 def get_start_time(ps_output_line: str) -> datetime:
-    """
+    """ Deprecated
+
     Get the start time of a process from one of `ps`' output
     lines.
 
@@ -76,7 +94,8 @@ def get_start_time(ps_output_line: str) -> datetime:
 
 
 def get_pids_to_watch(executable_path: str) -> List[Tuple[int, datetime]]:
-    """
+    """ Deprecated
+
     Find each process id's that should be watched to check if the process started by
     the provided executable path has completed it's execution.
 
@@ -102,7 +121,8 @@ def get_pids_to_watch(executable_path: str) -> List[Tuple[int, datetime]]:
 
 
 def get_matching_pid(process_ids_start_time: List[Tuple[int, datetime]], command_typed_at: datetime) -> int:
-    """
+    """ Deprecated
+
     Matches a process id from a process start time. The smaller the gap between
     when the command was typed and the process' actual start time the better.
 
