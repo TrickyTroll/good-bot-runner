@@ -27,10 +27,9 @@ import sys
 import time
 import os
 from datetime import datetime
-import process_watcher
 from typing import Union, List, Dict
 
-from runner import human_typing
+from runner import human_typing, process_watcher
 
 
 class Commands:
