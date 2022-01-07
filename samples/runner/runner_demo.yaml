@@ -1,0 +1,6 @@
+commands:
+  - echo 'Executing the `runner` program...'
+  - runner ./samples/basic/test_conf.yaml
+expect:
+  - prompt
+  - EOP
