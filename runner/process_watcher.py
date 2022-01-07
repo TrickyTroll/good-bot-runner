@@ -10,11 +10,9 @@ from typing import List, Tuple
 
 from dateutil import parser
 
-from runner.commands_runner import Commands
-
-
 def get_executable(command: str) -> str:
-    """
+    """ Deprecated
+
     Get the name of the executable that was called using the provided command.
 
     This function assumes that the first thing that is a valid executable in
@@ -36,8 +34,43 @@ def get_executable(command: str) -> str:
         if executable_path:
             command_name = executable_path
 
+    if command_name == "":
+        raise ValueError("The provided command contained no variable linked to an executable.")
+
     return command_name
 
+def get_command_name(full_command: str) -> str:
+    """
+    Get the name of a command that was typed with other parameters and flags.
+
+    This function assumes that the first thing that is a valid executable in
+    the provided command is the executable that was called using the command.
+
+    The previous assumption might cause this function to be wrong if a parameter
+    is passed before the command (like environment variables) is also a valid
+    command (an executable in the user's PATH).
+
+    Args:
+        full_command (str): The full command that was typed to spawn a process.
+
+    Raises:
+        ValueError: If no part of the `full_command` can be linked to an executable.
+            This is verified using `which`.
+
+    Returns:
+        str: The name of the first string (separated on spaces) in `full_command` that
+            could be linked to an executable.
+    """
+    command_name: str = ""
+    for item in split(full_command):
+        executable_path = which(item)
+        if executable_path:
+            command_name = item
+
+    if command_name == "":
+        raise ValueError("The provided command contained no variable linked to an executable.")
+
+    return command_name
 
 def get_pid_to_watch(process_name: str) -> int:
     """Find the process id of the process spawned by `command_name`.
