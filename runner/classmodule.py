@@ -168,8 +168,7 @@ class Commands:
             # wait for process to be over here
             elif expect == "EOP":
                 executable_command = process_watcher.get_executable(command)
-                pids_to_watch = process_watcher.get_pids_to_watch(executable_command)
-                best_match_with_entered_time = process_watcher.get_matching_pid(pids_to_watch, command_entered_time)
+                pid_to_watch = process_watcher.get_pid_to_watch(executable_command)
                 # Fork here for waiting
                 try:
                     pid = os.fork()
@@ -178,7 +177,7 @@ class Commands:
                     sys.exit()
                 
                 if pid == 0:
-                    process_watcher.wait_for_process(best_match_with_entered_time)
+                    process_watcher.wait_for_process(pid_to_watch)
 
                 os.waitpid(pid, 0)
 
